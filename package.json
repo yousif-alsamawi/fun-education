@@ -1,0 +1,23 @@
+{
+  "name": "maktaba-stories-monorepo",
+  "private": true,
+  "description": "منصة مجلات وقصص الأطفال التربوية المخصصة للمكتبة - Personalized Children's Educational Magazine & Booklet Platform",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "turbo run dev",
+    "dev:studio": "pnpm --filter @maktaba/stationery-studio dev",
+    "agent:flow": "node apps/flow-agent/run-flow-automation.js",
+    "build": "turbo run build",
+    "build:studio": "pnpm --filter @maktaba/stationery-studio build",
+    "lint": "turbo run lint",
+    "test": "turbo run test"
+  },
+  "devDependencies": {
+    "turbo": "^2.4.0",
+    "typescript": "^5.7.0"
+  },
+  "packageManager": "pnpm@9.15.0",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

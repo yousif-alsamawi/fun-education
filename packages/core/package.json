@@ -1,0 +1,15 @@
+{
+  "name": "@maktaba/core",
+  "version": "1.0.0",
+  "description": "Shared models, types, and mathematical imposition logic for Maktaba Stories",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "build": "tsc",
+    "lint": "echo core-lint",
+    "test": "echo core-test"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0"
+  }
+}

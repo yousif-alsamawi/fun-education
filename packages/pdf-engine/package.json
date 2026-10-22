@@ -1,0 +1,18 @@
+{
+  "name": "@maktaba/pdf-engine",
+  "version": "1.0.0",
+  "description": "High-DPI PDF generation and saddle-stitch booklet imposition engine for children magazines",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "build": "tsc",
+    "lint": "echo pdf-lint",
+    "test": "echo pdf-test"
+  },
+  "dependencies": {
+    "@maktaba/core": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0"
+  }
+}

@@ -1,0 +1,46 @@
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="100%" height="100%">
+      <rect width="600" height="800" fill="#ffffff" />
+      <rect x="25" y="25" width="550" height="750" fill="none" stroke="#0f172a" stroke-width="6" rx="16" />
+
+      <!-- الترويسة العلوية المفرغة -->
+      <text x="300" y="80" font-family="'Cairo', sans-serif" font-size="28" font-weight="900" text-anchor="middle" fill="#0f172a">
+        لوّن البطل يوسف مع سبايدرمان (Spider-Man)!
+      </text>
+      <line x1="120" y1="100" x2="480" y2="100" stroke="#0f172a" stroke-width="3" stroke-dasharray="8 8" />
+
+      <!-- خطوط البطل الخارق المفرغة للتلوين -->
+      <g stroke="#0f172a" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <!-- درع وبطل خارق على اليمين -->
+        <circle cx="420" cy="340" r="100" />
+        <path d="M420,240 L420,440" />
+        <path d="M320,340 L520,340" />
+        <!-- قناع البطل -->
+        <ellipse cx="420" cy="320" rx="40" ry="50" />
+        <path d="M400,310 Q420,330 440,310" />
+
+        <!-- شخصية الطفل البطل على اليسار -->
+        <circle cx="180" cy="340" r="100" />
+        <circle cx="180" cy="310" r="45" />
+        <!-- وشاح البطل الصغير -->
+        <path d="M140,360 Q180,420 220,360 L240,480 L120,480 Z" />
+
+        <!-- قبضة يد التحدي المشتركة -->
+        <circle cx="300" cy="340" r="30" />
+        <path d="M285,340 L315,340" />
+
+        <!-- نجوم حولهما للتلوين -->
+        <polygon points="100,180 110,210 140,210 115,230 125,260 100,240 75,260 85,230 60,210 90,210" />
+        <polygon points="500,180 510,210 540,210 515,230 525,260 500,240 475,260 485,230 460,210 490,210" />
+        <polygon points="300,450 310,480 340,480 315,500 325,530 300,510 275,530 285,500 260,480 290,480" />
+      </g>
+
+      <!-- حروف اسم الطفل مفرغة في الأسفل للتلوين -->
+      <g transform="translate(300, 680)">
+        <rect x="-180" y="-40" width="360" height="70" fill="none" stroke="#0f172a" stroke-width="4" rx="12" />
+        <text x="0" y="8" font-family="'Cairo', sans-serif" font-size="34" font-weight="900" text-anchor="middle" fill="none" stroke="#0f172a" stroke-width="2">
+          البطل يوسف
+        </text>
+      </g>
+    </svg>
+    

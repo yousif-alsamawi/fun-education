@@ -1,0 +1,16 @@
+node_modules
+.pnpm-store
+dist
+.turbo
+.next
+out
+*.log
+.env
+.env.local
+.DS_Store
+Thumbs.db
+Git-Setup.exe
+*.tmp
+.temp-print-profile
+*.db-journal
+push-to-github.js

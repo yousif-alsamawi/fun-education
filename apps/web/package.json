@@ -1,0 +1,17 @@
+{
+  "name": "@maktaba/web",
+  "version": "1.0.0",
+  "description": "لوحة تحكم مكتبة الشعلة - نظام قصص ومجلات الأطفال التربوية المخصصة",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "build": "echo web-build",
+    "lint": "echo web-lint",
+    "test": "echo web-test"
+  },
+  "dependencies": {
+    "@maktaba/core": "workspace:*",
+    "@maktaba/pdf-engine": "workspace:*",
+    "@maktaba/flow-agent": "workspace:*"
+  }
+}

@@ -1,0 +1,2415 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مكتبة الشعلة - نظام توليد وطباعة مجلات الأطفال بالربط البرمجي الحقيقي</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@600;700;800&family=Cairo:wght@400;600;700;800;900&family=Changa:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            cairo: ['Cairo', 'sans-serif'],
+            changa: ['Changa', 'sans-serif'],
+            baloo: ['"Baloo Bhaijaan 2"', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Changa', 'Cairo', sans-serif; }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col">
+
+  <!-- شريط التنقل العلوي -->
+  <header class="bg-gradient-to-r from-blue-950 via-indigo-900 to-blue-900 text-white shadow-lg border-b border-indigo-700/50 sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 py-3 sm:px-6 flex justify-between items-center">
+      <div class="flex items-center space-x-3 space-x-reverse">
+        <div class="w-11 h-11 rounded-2xl bg-amber-400 text-blue-950 flex items-center justify-center font-black text-2xl shadow-md">
+          🔥
+        </div>
+        <div>
+          <h1 class="text-xl font-black tracking-wide flex items-center gap-2">
+            مكتبة الشعلة
+            <span class="text-xs bg-emerald-500/20 text-emerald-300 border border-emerald-400/40 px-2.5 py-0.5 rounded-full font-bold">
+              ربط برمجي حقيقي Real API
+            </span>
+          </h1>
+          <p class="text-xs text-blue-200">توليد مجلات وقصص الأطفال • مطابقة الوجوه 100% FaceID • طباعة A5 بدون دوائر أو Placeholders</p>
+        </div>
+      </div>
+      
+      <!-- إعدادات رابط API الخارجي وأزرار سريعة -->
+      <div class="flex items-center gap-2.5">
+        <button onclick="openConfigModal()" class="bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-xl border border-white/20 text-xs font-bold flex items-center gap-1.5 transition-all">
+          <span>⚙️</span> رابط API التوليد الخارجي
+        </button>
+        <button onclick="openBookletPrintDirect()" class="bg-emerald-600 hover:bg-emerald-500 px-3 py-1.5 rounded-xl text-xs font-black flex items-center gap-1.5 shadow-md transition-all">
+          <span>🖨️</span> طباعة فورية A5
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- الحاوية الرئيسية -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 flex-1 w-full">
+    
+    <!-- خطوات العمل (Tabs) -->
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-2 mb-6 flex flex-wrap gap-2 justify-between font-changa">
+      <button onclick="switchTab('tab-inputs')" id="btn-tab-inputs" class="tab-btn flex-1 py-2.5 px-3 rounded-xl font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-1.5 bg-blue-600 text-white shadow-sm">
+        <span>👤</span> 1. بيانات وصور الأبطال
+      </button>
+      <button onclick="switchTab('tab-story')" id="btn-tab-story" class="tab-btn flex-1 py-2.5 px-3 rounded-xl font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-1.5 text-slate-600 hover:bg-slate-100">
+        <span>📖</span> 2. مشاهد القصة والصور
+      </button>
+      <button onclick="switchTab('tab-preview')" id="btn-tab-preview" class="tab-btn flex-1 py-2.5 px-3 rounded-xl font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-1.5 text-slate-600 hover:bg-slate-100">
+        <span>👀</span> 3. المعاينة الحية للمجلة
+      </button>
+      <button onclick="switchTab('tab-flow')" id="btn-tab-flow" class="tab-btn flex-1 py-2.5 px-3 rounded-xl font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-1.5 text-purple-700 bg-purple-50 hover:bg-purple-100 border border-purple-200">
+        <span>🎨</span> 4. استوديو قوقل فلو (Google Flow)
+      </button>
+      <button onclick="switchTab('tab-print')" id="btn-tab-print" class="tab-btn flex-1 py-2.5 px-3 rounded-xl font-bold text-xs sm:text-sm transition-all flex items-center justify-center gap-1.5 text-slate-600 hover:bg-slate-100">
+        <span>🖨️</span> 5. الطباعة الورقية والتدبيس
+      </button>
+    </div>
+
+    <!-- المحتوى 1: إدخال البيانات ورفع صور الطفل والوالدين -->
+    <section id="tab-inputs" class="tab-content block">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- العمود الأيمن: بيانات الطفل واختيار النمط والسلوك (7 أعمدة) -->
+        <div class="lg:col-span-7 space-y-6">
+          <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+            <h2 class="text-base font-bold text-slate-800 mb-4 flex items-center gap-2 border-b pb-3">
+              <span>📝</span> معلومات الطفل والبطل الخارق
+            </h2>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-slate-600 mb-1">اسم الطفل (بطل القصة) *</label>
+                <input type="text" id="childName" value="عمر" placeholder="مثال: عمر" class="w-full px-3 py-2 border rounded-xl border-slate-300 focus:ring-2 focus:ring-blue-500 font-bold" />
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-600 mb-1">عمر الطفل *</label>
+                <input type="number" id="childAge" value="7" min="3" max="14" class="w-full px-3 py-2 border rounded-xl border-slate-300 focus:ring-2 focus:ring-blue-500 font-bold" />
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-600 mb-1">جنس الطفل</label>
+                <select id="childGender" class="w-full px-3 py-2 border rounded-xl border-slate-300 focus:ring-2 focus:ring-blue-500 font-bold">
+                  <option value="boy">ولد (بطل خارق)</option>
+                  <option value="girl">بنت (بطلة خارقة)</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-600 mb-1">البطل الخارق المفضل *</label>
+                <input type="text" id="favoriteHero" value="سبايدرمان (Spider-Man)" placeholder="مثال: سبايدرمان، سونيك، باتمان..." class="w-full px-3 py-2 border rounded-xl border-slate-300 focus:ring-2 focus:ring-blue-500 font-bold" />
+              </div>
+            </div>
+
+            <!-- اختيار النمط الفني -->
+            <div class="mt-6">
+              <label class="block text-xs font-bold text-slate-600 mb-2">النمط الفني لصور المجلة (Art Style) *</label>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="artStylesContainer">
+                <label class="border-2 border-blue-600 bg-blue-50/50 rounded-xl p-3 cursor-pointer flex items-center gap-3">
+                  <input type="radio" name="artStyle" value="3d-pixar" checked class="text-blue-600" />
+                  <div>
+                    <div class="font-bold text-sm text-slate-800">كرتوني ثلاثي أبعاد بيكسار (3D Pixar)</div>
+                    <div class="text-xs text-slate-500">مظهر سينمائي مبهج وعصري جدا للأطفال</div>
+                  </div>
+                </label>
+
+                <label class="border-2 border-slate-200 hover:border-slate-300 rounded-xl p-3 cursor-pointer flex items-center gap-3">
+                  <input type="radio" name="artStyle" value="anime" class="text-blue-600" />
+                  <div>
+                    <div class="font-bold text-sm text-slate-800">أنمي ياباني مشرق (Anime Style)</div>
+                    <div class="text-xs text-slate-500">خطوط نقية وألوان حيوية وأعين معبرة</div>
+                  </div>
+                </label>
+
+                <label class="border-2 border-slate-200 hover:border-slate-300 rounded-xl p-3 cursor-pointer flex items-center gap-3">
+                  <input type="radio" name="artStyle" value="comic-book" class="text-blue-600" />
+                  <div>
+                    <div class="font-bold text-sm text-slate-800">مجلة كوميكس خارقة (Comic Book)</div>
+                    <div class="text-xs text-slate-500">حركات ديناميكية وخطوط حبر قوية</div>
+                  </div>
+                </label>
+
+                <label class="border-2 border-slate-200 hover:border-slate-300 rounded-xl p-3 cursor-pointer flex items-center gap-3">
+                  <input type="radio" name="artStyle" value="classic-cartoon" class="text-blue-600" />
+                  <div>
+                    <div class="font-bold text-sm text-slate-800">كرتون قصص كلاسيكي (Storybook)</div>
+                    <div class="text-xs text-slate-500">ألوان مائية دافئة ورسومات لطيفة ومريحة</div>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- اختيار بيئة وعالم القصة والمغامرة المشوقة -->
+            <div class="mt-6 pt-5 border-t border-slate-200">
+              <div class="flex items-center justify-between mb-2">
+                <label class="block text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                  <span class="text-base">🌍</span>
+                  <span>بيئة وعالم القصة والمغامرة المشوقة (Story Adventure World) *</span>
+                </label>
+                <span class="text-[10px] font-bold bg-purple-100 text-purple-800 px-2.5 py-0.5 rounded-full border border-purple-200">
+                  أحداث مشوقة + غرس القيم
+                </span>
+              </div>
+              <p class="text-[11px] text-slate-500 mb-3 leading-relaxed">
+                اختر عالم المغامرة التي يعشقها طفلك. يتم نسج حبكة مشوقة ومثيرة في هذا العالم مع بطله المفضل لعلاج السلوك وغرس القيم الإيجابية دون وعظ مباشر:
+              </p>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="storySettingsContainer">
+                <label id="setting-card-crime-fighting" class="border-2 border-purple-600 bg-purple-50/60 rounded-xl p-3 cursor-pointer flex items-start gap-3 transition-all hover:bg-purple-50">
+                  <input type="radio" name="storySetting" value="crime-fighting" checked onchange="handleStorySettingChange('crime-fighting')" class="text-purple-600 mt-1" />
+                  <div>
+                    <div class="font-bold text-sm text-purple-950 flex items-center gap-1">
+                      <span>⚔️</span> محاربة الجريمة وإنقاذ المدينة (Crime Fighting)
+                    </div>
+                    <div class="text-xs text-purple-800/80 mt-0.5">مهمة ليلية سرية مع البطل الخارق، إشارات استغاثة، ومطاردات ذكية تعتمد على التخطيط والانضباط.</div>
+                  </div>
+                </label>
+
+                <label id="setting-card-jungle-safari" class="border-2 border-slate-200 hover:border-slate-300 rounded-xl p-3 cursor-pointer flex items-start gap-3 transition-all">
+                  <input type="radio" name="storySetting" value="jungle-safari" onchange="handleStorySettingChange('jungle-safari')" class="text-purple-600 mt-1" />
+                  <div>
+                    <div class="font-bold text-sm text-slate-800 flex items-center gap-1">
+                      <span>🌴</span> استكشاف الغابة وسفاري الطبيعة (Jungle Safari)
+                    </div>
+                    <div class="text-xs text-slate-500 mt-0.5">رحلة في أعماق الطبيعة الاستوائية وحل ألغاز معبد الحكمة القديم والتحلي بالصبر والتركيز.</div>
+                  </div>
+                </label>
+
+                <label id="setting-card-space-odyssey" class="border-2 border-slate-200 hover:border-slate-300 rounded-xl p-3 cursor-pointer flex items-start gap-3 transition-all">
+                  <input type="radio" name="storySetting" value="space-odyssey" onchange="handleStorySettingChange('space-odyssey')" class="text-purple-600 mt-1" />
+                  <div>
+                    <div class="font-bold text-sm text-slate-800 flex items-center gap-1">
+                      <span>🚀</span> مغامرة الفضاء الكوني وسفن المجرات (Space Odyssey)
+                    </div>
+                    <div class="text-xs text-slate-500 mt-0.5">قيادة مركبة بين الكواكب والمجرات، وتحديات علمية تتطلب الدقة العالية والنظام لإنقاذ الرحلة.</div>
+                  </div>
+                </label>
+
+                <label id="setting-card-fantasy-magic" class="border-2 border-slate-200 hover:border-slate-300 rounded-xl p-3 cursor-pointer flex items-start gap-3 transition-all">
+                  <input type="radio" name="storySetting" value="fantasy-magic" onchange="handleStorySettingChange('fantasy-magic')" class="text-purple-600 mt-1" />
+                  <div>
+                    <div class="font-bold text-sm text-slate-800 flex items-center gap-1">
+                      <span>🏰</span> عالم الفانتازيا والقلاع السحرية (Fantasy Realm)
+                    </div>
+                    <div class="text-xs text-slate-500 mt-0.5">قلعة الفرسان وبوابات سحرية، واستعادة جوهرة النور بالأمانة والاجتهاد والشجاعة الحقيقية.</div>
+                  </div>
+                </label>
+
+                <label id="setting-card-realistic-daily" class="sm:col-span-2 border-2 border-slate-200 hover:border-slate-300 rounded-xl p-3 cursor-pointer flex items-start gap-3 transition-all">
+                  <input type="radio" name="storySetting" value="realistic-daily" onchange="handleStorySettingChange('realistic-daily')" class="text-purple-600 mt-1" />
+                  <div>
+                    <div class="font-bold text-sm text-slate-800 flex items-center gap-1">
+                      <span>🏠</span> مغامرة واقعية في المنزل والمدرسة (Realistic Daily Life)
+                    </div>
+                    <div class="text-xs text-slate-500 mt-0.5">مواقف يومية مألوفة تدور بين الأسرة والصف الدراسي مع وصول ملهم للبطل الخارق في غرفة الطفل.</div>
+                  </div>
+                </label>
+              </div>
+
+              <!-- فكرة مغامرة خاصة من خيال المستخدم -->
+              <div class="mt-3">
+                <label class="block text-[11px] font-bold text-slate-600 mb-1">💡 أو اكتب فكرة مغامرة خاصة من خيالك (اختياري):</label>
+                <input type="text" id="customStorySetting" placeholder="مثال: جزيرة الديناصورات الطيبة، أعماق المحيط السحرية، مدينة الروبوتات والذكاء الاصطناعي..." class="w-full px-3 py-2 border rounded-xl border-slate-300 focus:ring-2 focus:ring-purple-500 text-xs font-semibold" />
+              </div>
+            </div>
+          </div>
+
+          <!-- تحديد السلوك والهدف التربوي -->
+          <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+            <h2 class="text-base font-bold text-slate-800 mb-3 flex items-center gap-2 border-b pb-2">
+              <span>🎯</span> السلوك المراد علاجه بالتعزيز الإيجابي
+            </h2>
+
+            <div class="space-y-3">
+              <div>
+                <label class="block text-xs font-bold text-slate-600 mb-1">وصف المشكلة كما ذكرها ولي الأمر *</label>
+                <textarea id="behaviorDescription" rows="2" class="w-full px-3 py-2 border rounded-xl border-slate-300 focus:ring-2 focus:ring-blue-500 text-sm font-semibold">يقضي وقتا طويلا في اللعب ويهمل أداء واجباته المدرسية وتجهيز حقيبته.</textarea>
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold text-slate-600 mb-1">السلوك الإيجابي البديل (بدون تشكيل) *</label>
+                <input type="text" id="positiveAlternative" value="العلم والاجتهاد سر قوة الأبطال وتنظيم الوقت" class="w-full px-3 py-2 border rounded-xl border-slate-300 focus:ring-2 focus:ring-blue-500 text-sm font-bold text-blue-900" />
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                <div>
+                  <label class="block text-xs font-bold text-slate-600 mb-1">اسم ولي الأمر *</label>
+                  <input type="text" id="parentName" value="أبو عمر وأم عمر" class="w-full px-3 py-2 border rounded-xl border-slate-300 font-bold text-sm" />
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-600 mb-1">كلمة إهداء الأهل للطفل (في الصفحة 2)</label>
+                  <input type="text" id="parentDedication" value="يا بطلنا الغالي عمر نحن فخورون بذكائك دائما وواثقون أنك ستكون بطلا متميزا." class="w-full px-3 py-2 border rounded-xl border-slate-300 text-sm" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- العمود الأيسر: رفع صور الطفل وصور الأب والأم (5 أعمدة) -->
+        <div class="lg:col-span-5 space-y-6">
+          <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+            <h2 class="text-base font-bold text-slate-800 mb-2 flex items-center gap-2">
+              <span>📸</span> رفع صور الوجوه لمطابقة الملامح 100%
+            </h2>
+            <p class="text-xs text-slate-500 mb-4">يتم إرسال الصور للـ Backend لتركيب الوجه بالـ IP-Adapter FaceID</p>
+
+            <div class="space-y-4">
+              <!-- 1. صورة الطفل -->
+              <div class="border-2 border-dashed border-blue-400 bg-blue-50/40 rounded-xl p-4 text-center cursor-pointer hover:bg-blue-50 transition-all" onclick="document.getElementById('childPhotoInput').click()">
+                <input type="file" id="childPhotoInput" accept="image/*" class="hidden" onchange="handlePhotoUpload(event, 'child')" />
+                <div id="childPhotoPlaceholder">
+                  <div class="text-3xl mb-1">👦</div>
+                  <div class="text-xs font-black text-blue-950">صورة بطل القصة (الطفل) - إلزامي</div>
+                  <div class="text-[11px] text-blue-700 mt-0.5">اضغط لرفع الصورة الحقيقية</div>
+                </div>
+                <div id="childPhotoPreviewContainer" class="hidden relative">
+                  <img id="childPhotoPreview" class="max-h-36 mx-auto rounded-lg shadow-md border-2 border-blue-600 object-cover" />
+                  <span class="inline-block mt-2 text-xs font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full">
+                    ✅ تم تجهيز صورة وجه الطفل
+                  </span>
+                </div>
+              </div>
+
+              <!-- بطاقة تثبيت البصمة والملامح البصرية للطفل (100% Visual Facial & Hair Anchor) -->
+              <div class="bg-gradient-to-br from-indigo-50/90 via-blue-50/70 to-slate-50 border border-blue-200/90 rounded-2xl p-4 shadow-sm">
+                <div class="flex items-center justify-between mb-2">
+                  <div class="flex items-center gap-1.5">
+                    <span class="text-base">🧬</span>
+                    <span class="text-xs font-black text-blue-950">تثبيت البصمة البصرية والملامح (Visual Anchor)</span>
+                  </div>
+                  <span class="text-[10px] font-bold bg-blue-100 text-blue-800 px-2.5 py-0.5 rounded-full border border-blue-300">
+                    تطابق ملامح 100%
+                  </span>
+                </div>
+                <p class="text-[11px] text-blue-900/90 mb-3 leading-relaxed">
+                  يتم حقن هذه المواصفات البصرية المأخوذة من صورة الطفل حرفياً داخل كل طلب للتوليد لضمان تطابق قصة الشعر والملامح واللباس في جميع المشاهد:
+                </p>
+
+                <div class="space-y-2.5">
+                  <div>
+                    <label class="block text-[11px] font-bold text-slate-700 mb-0.5 flex items-center justify-between">
+                      <span>✂️ قصة ولون الشعر (Haircut & Style):</span>
+                      <span class="text-[10px] text-slate-500 font-normal">من صورة الطفل الحالية</span>
+                    </label>
+                    <input type="text" id="childHairStyle" value="شعر قصير كيرلي مموج داكن من الأعلى مع تدريج ناعم على الجانبين (Curly Fade)" class="w-full px-3 py-1.5 border rounded-xl border-blue-300 text-xs font-semibold bg-white text-slate-800 shadow-sm focus:ring-2 focus:ring-blue-500" />
+                  </div>
+                  <div>
+                    <label class="block text-[11px] font-bold text-slate-700 mb-0.5 flex items-center justify-between">
+                      <span>👀 ملامح الوجه والعيون والبشرة (Face & Eyes):</span>
+                      <span class="text-[10px] text-slate-500 font-normal">عربية أصيلة</span>
+                    </label>
+                    <input type="text" id="childFaceFeatures" value="عيون لوزية داكنة واسعة، حواجب مقوسة، وجه بيضاوي ناعم، بشرة حنطية عربية، وابتسامة هادئة واثقة" class="w-full px-3 py-1.5 border rounded-xl border-blue-300 text-xs font-semibold bg-white text-slate-800 shadow-sm focus:ring-2 focus:ring-blue-500" />
+                  </div>
+                  <div>
+                    <label class="block text-[11px] font-bold text-slate-700 mb-0.5 flex items-center justify-between">
+                      <span>👕 اللباس والمظهر المميز (Signature Outfit):</span>
+                      <span class="text-[10px] text-slate-500 font-normal">اللباس الظاهر بالصورة</span>
+                    </label>
+                    <input type="text" id="childClothingStyle" value="قميص أسود أنيق مع كنزة صوفية مخططة أفقياً بالأبيض والأسود معقودة فوق الكتفين وبنطال جينز أزرق" class="w-full px-3 py-1.5 border rounded-xl border-blue-300 text-xs font-semibold bg-white text-slate-800 shadow-sm focus:ring-2 focus:ring-blue-500" />
+                  </div>
+                </div>
+
+                <div class="mt-3 pt-2.5 border-t border-blue-200/60 flex flex-wrap items-center justify-between gap-1 text-[11px]">
+                  <span class="text-[10px] text-slate-500">خيارات سريعة للمطابقة:</span>
+                  <div class="flex gap-1.5">
+                    <button type="button" onclick="setVisualTraitsPreset('current_boy')" class="text-[10px] font-bold bg-white text-blue-700 hover:bg-blue-50 border border-blue-200 px-2 py-0.5 rounded-lg transition-all">
+                      👦 صورة عمر (كيرلي وكنزة مخططة)
+                    </button>
+                    <button type="button" onclick="setVisualTraitsPreset('girl')" class="text-[10px] font-bold bg-white text-pink-700 hover:bg-pink-50 border border-pink-200 px-2 py-0.5 rounded-lg transition-all">
+                      👧 بطلة (ضفائر وشعر ناعم)
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- خيار تفعيل دمج الوالدين -->
+              <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 flex items-start gap-2.5">
+                <input type="checkbox" id="includeParentsCheck" checked class="mt-1 w-4 h-4 text-blue-600 rounded" onchange="toggleParentsOption()" />
+                <label for="includeParentsCheck" class="text-xs text-amber-900 cursor-pointer">
+                  <strong>دمج الوالدين كشخصيات حية في المشاهد (Multi-Subject)</strong>
+                  <p class="text-[11px] text-amber-700 mt-0.5">عند الرفع، يتم تركيب وجه الأب والأم على أجسادهم الصحيحة في المشاهد.</p>
+                </label>
+              </div>
+
+              <!-- 2. صورة الأب -->
+              <div id="fatherUploadBox" class="border-2 border-dashed border-slate-300 bg-slate-50 rounded-xl p-3 text-center cursor-pointer hover:border-emerald-500 hover:bg-emerald-50/40 transition-all" onclick="document.getElementById('fatherPhotoInput').click()">
+                <input type="file" id="fatherPhotoInput" accept="image/*" class="hidden" onchange="handlePhotoUpload(event, 'father')" />
+                <div id="fatherPhotoPlaceholder">
+                  <div class="text-2xl mb-1">👨</div>
+                  <div class="text-xs font-bold text-slate-700">رفع صورة الأب (اختياري لدمجه في القصة)</div>
+                </div>
+                <div id="fatherPhotoPreviewContainer" class="hidden relative">
+                  <img id="fatherPhotoPreview" class="max-h-28 mx-auto rounded-lg shadow-sm border border-emerald-500 object-cover" />
+                  <span class="inline-block mt-1 text-xs font-bold text-emerald-700">✅ تم تجهيز صورة وجه الأب</span>
+                </div>
+              </div>
+
+              <!-- 3. صورة الأم -->
+              <div id="motherUploadBox" class="border-2 border-dashed border-slate-300 bg-slate-50 rounded-xl p-3 text-center cursor-pointer hover:border-pink-500 hover:bg-pink-50/40 transition-all" onclick="document.getElementById('motherPhotoInput').click()">
+                <input type="file" id="motherPhotoInput" accept="image/*" class="hidden" onchange="handlePhotoUpload(event, 'mother')" />
+                <div id="motherPhotoPlaceholder">
+                  <div class="text-2xl mb-1">👩</div>
+                  <div class="text-xs font-bold text-slate-700">رفع صورة الأم (اختياري لدمجها في القصة)</div>
+                </div>
+                <div id="motherPhotoPreviewContainer" class="hidden relative">
+                  <img id="motherPhotoPreview" class="max-h-28 mx-auto rounded-lg shadow-sm border border-pink-500 object-cover" />
+                  <span class="inline-block mt-1 text-xs font-bold text-pink-700">✅ تم تجهيز صورة وجه الأم</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- زر التوليد الحقيقي للـ API الخارجي -->
+            <div class="mt-6 pt-4 border-t">
+              <button onclick="startRealApiGeneration()" id="btnStartReal" class="w-full bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-700 hover:to-teal-800 text-white font-black py-4 px-6 rounded-2xl text-base shadow-xl flex items-center justify-center gap-2 transform hover:scale-[1.02] transition-all">
+                <span class="text-2xl">🚀</span>
+                <span>توليد وتجهيز المجلة بالـ API الحقيقي</span>
+              </button>
+              <p class="text-center text-[11px] text-slate-500 mt-2">
+                يقوم الكود بإرسال طلبات POST حقيقية لكل مشهد بالـ Prompt وصور الوجوه ويعرض الصور الحقيقية فوراً.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- المحتوى 2: استعراض مشاهد القصة والصور الحقيقية (بدون مربعات أو Placeholders) -->
+    <section id="tab-story" class="tab-content hidden">
+      <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+        <div class="flex flex-wrap justify-between items-center border-b pb-4 mb-4 gap-2">
+          <div>
+            <h2 class="text-lg font-black text-slate-800 flex items-center gap-2">
+              <span>📖</span> صفحات المجلة الـ 12 المجهزة بالصور الحقيقية
+            </h2>
+            <p class="text-xs text-slate-500">تم استبدال كافة الـ Placeholders بالصور الحقيقية المتمددة لتغطية المشهد بالكامل</p>
+          </div>
+          <div class="flex gap-2">
+            <button onclick="openBookletPrintDirect()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-2.5 px-5 rounded-xl flex items-center gap-2 shadow-md">
+              <span>🖨️</span> طباعة المجلة المزدوجة A5 فوراً
+            </button>
+            <button onclick="switchTab('tab-preview')" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-2.5 px-4 rounded-xl flex items-center gap-1.5 shadow-sm">
+              <span>👀</span> المعاينة الحية
+            </button>
+          </div>
+        </div>
+
+        <!-- شريط تنبيه الأخطاء وإعادة المحاولة في حال تعثر الاتصال بالـ API -->
+        <div id="storyStatusBanner" class="hidden mb-5"></div>
+
+        <!-- قائمة الصفحات الـ 12 مع الصور الحقيقية -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="pagesGrid">
+          <!-- يتم ملؤها بالصور الحقيقية والنصوص -->
+        </div>
+      </div>
+    </section>
+
+    <!-- المحتوى 3: المعاينة الحية للمجلة (صورة حقيقية بالأعلى ونصوص بالأسفل) -->
+    <section id="tab-preview" class="tab-content hidden">
+      <div class="bg-slate-900 rounded-2xl p-6 shadow-xl border border-slate-800 text-white">
+        <div class="flex justify-between items-center border-b border-slate-800 pb-4 mb-6">
+          <div>
+            <h2 class="text-lg font-bold flex items-center gap-2">
+              <span class="text-amber-400">📖</span> العارض الحي للمجلة (12 صفحة كاملة)
+            </h2>
+            <p class="text-xs text-slate-400">الصورة الحقيقية متمددة في الأعلى (52%) والنص السردي في الأسفل بدون تشكيل</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <span id="previewPageIndicator" class="text-xs bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700 font-bold">
+              صفحة 1 من 12
+            </span>
+            <button onclick="prevPreviewPage()" class="bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-lg text-xs font-bold">
+              ⟵ السابقة
+            </button>
+            <button onclick="nextPreviewPage()" class="bg-blue-600 hover:bg-blue-500 px-3 py-1.5 rounded-lg text-xs font-bold">
+              التالية ⟶
+            </button>
+          </div>
+        </div>
+
+        <div class="flex justify-center items-center py-2">
+          <div id="magazinePageViewContainer" class="w-full max-w-md bg-white rounded-2xl overflow-hidden shadow-2xl min-h-[580px] text-slate-900">
+            <!-- محتوى الصفحة المختارة بالصورة الحقيقية -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- المحتوى 4: الطباعة الورقية والتدبيس -->
+    <section id="tab-print" class="tab-content hidden">
+      <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+        <h2 class="text-lg font-black text-slate-800 mb-2 flex items-center gap-2">
+          <span class="text-blue-600 text-xl">🖨️</span> طباعة وتدبيس المجلة في المكتبة
+        </h2>
+        <p class="text-xs text-slate-500 mb-6">المجلة جاهزة للطباعة الورقية فورا بنظام الملازم A5 Booklet ومنع انقسام المشاهد</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          
+          <!-- الخيار الموصى به: الملازم المزدوجة للتدبيس النصفي -->
+          <div class="border-2 border-emerald-500 bg-emerald-50/40 rounded-2xl p-6 flex flex-col justify-between shadow-sm">
+            <div>
+              <div class="flex justify-between items-start mb-3">
+                <span class="bg-emerald-600 text-white text-xs font-black px-2.5 py-1 rounded-lg">الخيار المثالي للمكتبة ⭐</span>
+                <span class="text-2xl">📌 ✂️</span>
+              </div>
+              <h3 class="font-black text-slate-900 text-base mb-1">نسخة الملازم للتدبيس النصفي (A5 Booklet)</h3>
+              <p class="text-xs text-slate-600 mb-4 leading-relaxed">
+                تفرش كل صفحتين A5 على ورقة A4 أفقية مع خط المنتصف. الصور الحقيقية بالأعلى والنصوص بالأسفل بدون أي انقسام.
+              </p>
+              <div class="bg-white rounded-xl p-3 border border-emerald-200 text-xs space-y-1.5 text-slate-700">
+                <div>📄 عدد الأوراق الفعلية: <strong>3 أوراق A4 فقط</strong></div>
+                <div>🔄 نوع الطباعة: <strong>على الوجهين (Flip on short edge)</strong></div>
+                <div>📌 التدبيس: <strong>دبوسان في خط المنتصف تماماً</strong></div>
+              </div>
+            </div>
+
+            <button onclick="openBookletPrintDirect()" class="mt-6 w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl text-sm flex items-center justify-center gap-2 shadow-md">
+              <span>🖨️</span> فتح نافذة طباعة الملازم المزدوجة فوراً
+            </button>
+          </div>
+
+          <!-- الخيار الثاني: نسخة القراءة الرقمية -->
+          <div class="border border-slate-300 bg-white rounded-2xl p-6 flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between items-start mb-3">
+                <span class="bg-slate-700 text-white text-xs font-bold px-2.5 py-1 rounded-lg">للقراءة الرقمية أو الواتساب</span>
+                <span class="text-2xl">📱 📄</span>
+              </div>
+              <h3 class="font-black text-slate-900 text-base mb-1">نسخة القراءة الرقمية (Digital Reading)</h3>
+              <p class="text-xs text-slate-600 mb-4 leading-relaxed">
+                صفحات متتالية من 1 إلى 12 صفحة، كل صفحة مقاس A5 تعرض الصورة الملونة في الأعلى والنص في الأسفل.
+              </p>
+              <div class="bg-slate-50 rounded-xl p-3 border border-slate-200 text-xs space-y-1.5 text-slate-700">
+                <div>📑 عدد الصفحات: <strong>12 صفحة متتالية</strong></div>
+                <div>📱 العرض: <strong>مناسب تماماً لشاشات الجوال والتابلت</strong></div>
+              </div>
+            </div>
+
+            <button onclick="openReadingPrintDirect()" class="mt-6 w-full bg-slate-800 hover:bg-slate-900 text-white font-bold py-3 px-4 rounded-xl text-sm flex items-center justify-center gap-2">
+              <span>📄</span> فتح نسخة القراءة الرقمية
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- المحتوى 4: استوديو وجسر قوقل فلو السحابي (Google Flow Studio Bridge) -->
+    <section id="tab-flow" class="tab-content hidden font-changa">
+      <div class="space-y-6">
+
+        <!-- بطاقة الربط الآلي بضغطة واحدة (One-Click Auto Bridge) -->
+        <div class="bg-gradient-to-r from-violet-900 via-purple-900 to-indigo-950 rounded-2xl p-6 sm:p-7 text-white shadow-2xl border-2 border-purple-400">
+          <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-5">
+            <div>
+              <div class="inline-flex items-center gap-2 px-3 py-1 bg-amber-400 text-slate-900 rounded-full text-xs font-black mb-2 shadow-sm">
+                <span>⚡</span> ميزة بنقرة واحدة المطلوبة (One-Click Auto Sync)
+              </div>
+              <h3 class="text-xl sm:text-2xl font-black text-white flex items-center gap-2">
+                <span>🤖</span> روبوت Google Flow الآلي: إرسال الأوامر ونقل الصور للمكتبة بنقرة واحدة
+              </h3>
+              <p class="text-xs sm:text-sm text-purple-200 font-cairo max-w-2xl mt-1 leading-relaxed">
+                لا داعي لنسخ ولصق 12 صفحة يدوياً! يقوم الروبوت الذكي بالربط بين موقع <strong>Google Flow</strong> وموقع <strong>مكتبة الشعلة</strong> فوراً، حيث يكتب الأوامر تلقائياً في قوقل فلو، ثم يسحب الصور المولدة ويضعها مباشرة في صفحات المجلة والطباعة!
+              </p>
+            </div>
+
+            <!-- أزرار الإطلاق بنقرة واحدة -->
+            <div class="flex flex-col sm:flex-row lg:flex-col gap-2.5 w-full sm:w-auto shrink-0">
+              <button onclick="launchFlowRobotOneClick()" class="bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 font-black text-sm py-3 px-5 rounded-xl flex items-center justify-center gap-2 shadow-xl transition-all transform hover:scale-105 active:scale-95">
+                <span>🚀</span> 1. فتح Google Flow وتفعيل الروبوت
+              </button>
+
+              <a id="flowBookmarkletLink" href="javascript:(function(){const s=document.createElement('script');s.src='http://localhost:3000/flow-copilot.js?t='+Date.now();document.body.appendChild(s);})();" onclick="copyBookmarkletCode(event)" class="bg-purple-600/60 hover:bg-purple-600 border border-purple-400 text-purple-100 font-bold text-xs py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-all text-center">
+                <span>⭐</span> 2. اسحب هذا الزر لشريط الإشارات (أو انقر لنسخه)
+              </a>
+
+              <button onclick="copyConsoleSnippet()" class="bg-slate-800 hover:bg-slate-700 text-purple-200 border border-purple-500/40 font-bold text-xs py-1.5 px-3 rounded-xl flex items-center justify-center gap-1 transition-all">
+                <span>📋</span> أو نسخ كود الروبوت للـ Console (F12)
+              </button>
+            </div>
+          </div>
+
+          <!-- خطوات الاستخدام السريعة بـ 3 خطوات واضحة -->
+          <div class="mt-5 pt-4 border-t border-purple-500/30 grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+            <div class="bg-purple-950/50 p-3 rounded-xl border border-purple-500/20 flex items-start gap-2.5">
+              <span class="w-6 h-6 bg-purple-600 text-white rounded-full flex items-center justify-center font-black text-xs shrink-0">1</span>
+              <div>
+                <strong class="text-white block mb-0.5">افتح Google Flow:</strong>
+                <span class="text-purple-200 text-[11px] leading-relaxed block">اضغط زر (1. فتح Google Flow) لتفتح المنصة في تبويب جديد بحسابك المسجل في قوقل.</span>
+              </div>
+            </div>
+
+            <div class="bg-purple-950/50 p-3 rounded-xl border border-purple-500/20 flex items-start gap-2.5">
+              <span class="w-6 h-6 bg-purple-600 text-white rounded-full flex items-center justify-center font-black text-xs shrink-0">2</span>
+              <div>
+                <strong class="text-white block mb-0.5">انقر الروبوت في كروم:</strong>
+                <span class="text-purple-200 text-[11px] leading-relaxed block">في صفحة Flow، انقر على الإشارة المرجعية أو الصق الكود في الـ Console، وسيظهر الروبوت فوراً أسفل الشاشة.</span>
+              </div>
+            </div>
+
+            <div class="bg-purple-950/50 p-3 rounded-xl border border-purple-500/20 flex items-start gap-2.5">
+              <span class="w-6 h-6 bg-emerald-500 text-slate-950 rounded-full flex items-center justify-center font-black text-xs shrink-0">3</span>
+              <div>
+                <strong class="text-emerald-300 block mb-0.5">توليد ونقل تلقائي للمجلة:</strong>
+                <span class="text-purple-200 text-[11px] leading-relaxed block">اضغط الزر الأخضر داخل الروبوت، وسيتولى كتابة الأوامر وتوليد الصور وسحبها فوراً إلى موقع الشعلة!</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- بطاقة الترحيب والربط المباشر -->
+        <div class="bg-gradient-to-r from-purple-900 via-indigo-900 to-slate-900 rounded-2xl p-6 sm:p-8 text-white shadow-xl border border-purple-500/30">
+          <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+            <div class="space-y-2">
+              <div class="inline-flex items-center gap-2 px-3 py-1 bg-purple-500/20 border border-purple-400/40 rounded-full text-xs font-black text-purple-200">
+                <span>✨</span> محرك Google Flow / Imagen 3 المعتمد في مكتبة الشعلة
+              </div>
+              <h2 class="text-xl sm:text-2xl font-black flex items-center gap-2">
+                <span>🎨</span> استوديو وجسر قوقل فلو المباشر (Google Flow Studio Bridge)
+              </h2>
+              <p class="text-xs sm:text-sm text-slate-300 font-cairo max-w-3xl leading-relaxed">
+                سر تفوق نتائج <strong>Google Flow</strong> يكمن في ميزة <strong>Character Reference</strong> التي تدمج صورة الطفل الأصلية مع محرك <strong>Google Imagen 3</strong>.
+                يمكنك هنا نسخ الأوامر المهندسة بنقرة واحدة (1-Click) لاستخدامها في موقع Flow مباشرة، أو تفعيل الربط البرمجي المباشر عبر مفتاح Google AI Studio!
+              </p>
+            </div>
+
+            <!-- أزرار الإجراءات السريعة -->
+            <div class="flex flex-wrap lg:flex-col gap-2.5 w-full sm:w-auto shrink-0">
+              <a href="https://labs.google/flow" target="_blank" rel="noopener noreferrer" class="bg-purple-600 hover:bg-purple-500 text-white font-black text-xs py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 shadow-lg transition-all active:scale-95">
+                <span>🚀</span> فتح موقع Google Flow الرسمي
+              </a>
+              <button onclick="downloadChildReferencePhoto()" class="bg-slate-800 hover:bg-slate-700 text-purple-200 border border-purple-400/30 font-black text-xs py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 shadow transition-all active:scale-95">
+                <span>💾</span> تنزيل صورة الطفل المرجعية
+              </button>
+              <a href="/Maktaba_Shula_Colab_FaceID.ipynb" download="Maktaba_Shula_Colab_FaceID.ipynb" class="bg-amber-600 hover:bg-amber-500 text-white font-black text-xs py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 shadow-md transition-all active:scale-95" title="تحميل دفتر Google Colab لتشغيل خادم GPU مجاني لمطابقة الوجوه">
+                <span>⚡</span> تحميل دفتر Google Colab المجاني (GPU T4)
+              </a>
+              <button onclick="openConfigModal()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 shadow-md transition-all active:scale-95">
+                <span>⚙️</span> تفعيل Google Imagen 3 API
+              </button>
+            </div>
+          </div>
+
+          <!-- شريط البصمة البصرية الثابتة للطفل في Google Flow -->
+          <div class="mt-6 pt-5 border-t border-purple-500/20 grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+            <div class="md:col-span-2 flex items-center gap-3">
+              <img id="flowChildThumb" src="/sample-child.jpg" alt="صورة الطفل" class="w-14 h-14 rounded-xl object-cover border-2 border-purple-400 shadow-md bg-white">
+              <div>
+                <div class="text-xs font-black text-purple-200" id="flowChildName">البطل: عمر</div>
+                <div class="text-[11px] text-slate-400" id="flowChildAge">7 سنوات • ولد</div>
+              </div>
+            </div>
+            <div class="md:col-span-8 bg-purple-950/50 p-3 rounded-xl border border-purple-500/30 font-mono text-[11px] text-purple-100 text-left direction-ltr overflow-x-auto whitespace-pre-wrap line-clamp-3" id="flowAnchorPreview">
+              an authentic 7-year-old Arab boy named Omar, haircut: curly fade haircut with tight curls, face: large expressive dark almond-shaped eyes, signature clothes: black collared polo shirt with black-and-white striped knit sweater draped and tied across shoulders
+            </div>
+            <div class="md:col-span-2 text-right">
+              <button onclick="copyChildAnchorPrompt()" class="w-full bg-purple-500/20 hover:bg-purple-500/30 border border-purple-400/40 text-purple-200 font-bold text-xs py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-all">
+                <span>📋</span> نسخ وصف الشخصية
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- قائمة الصفحات الـ 12 المجهزة لأوامر قوقل فلو -->
+        <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+          <div class="flex flex-wrap justify-between items-center mb-6 gap-3 border-b pb-4">
+            <div>
+              <h3 class="text-base font-black text-slate-800 flex items-center gap-2">
+                <span>📋</span> أوامر واستيراد صفحات المجلة الـ 12 لـ Google Flow
+              </h3>
+              <p class="text-xs text-slate-500">انسخ الأمر وضعه في Google Flow مع صورة الطفل كـ Character Reference، ثم ارفع الصورة الناتجة هنا لتنزل مباشرة في المجلة والطباعة.</p>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <button onclick="openJsonArrayModal()" class="bg-gradient-to-r from-purple-700 to-indigo-700 hover:from-purple-800 hover:to-indigo-800 text-white font-black text-xs py-2.5 px-4 rounded-xl flex items-center gap-1.5 shadow-md transition-all active:scale-95">
+                <span>📦</span> تصدير مصفوفة الأوامر (JSON Array)
+              </button>
+              <button onclick="triggerAutomatedA5PdfExport()" id="btnAgentPdfExport" class="bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs py-2.5 px-4 rounded-xl flex items-center gap-1.5 shadow-md transition-all active:scale-95" title="تصدير المجلة بالكامل ككتيب A5 مزدوج وجاهز للطباعة والتدبيس">
+                <span>🖨️</span> تصدير كتيب A5 PDF للأتمتة
+              </button>
+              <button onclick="launchFlowRobotOneClick()" class="bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 font-black text-xs py-2.5 px-4 rounded-xl flex items-center gap-1.5 shadow-md transition-all active:scale-95">
+                <span>🚀</span> تشغيل أتمتة Google Flow المباشرة
+              </button>
+            </div>
+          </div>
+
+          <div id="flowPagesContainer" class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+            <!-- يتم تعبئتها ديناميكياً ببطاقات الصفحات -->
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- نافذة مودال إعدادات رابط API التوليد الخارجي -->
+  <div id="configModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl p-6 sm:p-7 max-w-lg w-full shadow-2xl border border-slate-100 text-right">
+      <div class="flex justify-between items-center mb-4 border-b pb-3">
+        <h3 class="text-base font-black text-slate-900 flex items-center gap-2">
+          <span>⚙️</span> إعدادات ومسار عمل توليد الصور (ComfyUI / Colab / Cloud)
+        </h3>
+        <button onclick="closeConfigModal()" class="text-slate-400 hover:text-slate-700 text-lg font-bold">✕</button>
+      </div>
+
+      <div class="space-y-4 text-xs">
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">نوع محرك التوليد (Generation Engine)</label>
+          <select id="apiTypeSelect" onchange="handleApiTypeChange()" class="w-full px-3 py-2 border rounded-xl border-slate-300 font-bold text-xs bg-slate-50">
+            <option value="google-imagen" selected>🎨 محرك Google Flow / Imagen 3 الرسمي (Google AI Studio - دقة سينمائية وثبات ملامح الطفل)</option>
+            <option value="cloud-ai">☁️ التوليد السحابي الفوري الذكي (Cloud AI - تثبيت الملامح وتخطي الحدود)</option>
+            <option value="fal-ai">⚡ خادم Fal.ai InstantID الفائق (تطابق الوجه الحقيقي 100% بالذكاء الاصطناعي)</option>
+            <option value="comfyui">🖥️ مسار عمل مخصص ComfyUI / Google Colab (Workflow JSON Payload + FaceID 100%)</option>
+            <option value="custom">🌐 رابط API مخصص / Webhook (Custom REST API / FaceID / IP-Adapter)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">رابط API مخصص (Custom Endpoint URL) *</label>
+          <div class="flex gap-2">
+            <input type="text" id="apiEndpointInput" value="https://image.pollinations.ai/prompt" placeholder="مثال: http://127.0.0.1:8188/prompt أو رابط Colab ngrok أو Custom API URL" class="flex-1 px-3 py-2 border rounded-xl border-slate-300 font-mono text-left direction-ltr text-xs font-bold" />
+            <button type="button" onclick="testApiConnection()" id="btnTestConn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-3 py-2 rounded-xl text-xs flex items-center gap-1 shrink-0">
+              <span>🔍</span> فحص الاتصال
+            </button>
+          </div>
+          <div id="connectionTestStatus" class="hidden mt-2 p-2.5 rounded-xl text-xs font-bold font-cairo"></div>
+          <p id="endpointHelpText" class="text-[11px] text-slate-500 mt-1">يتم التوليد والرسم عبر السحابة فوراً بأعلى جودة كرتونية جاهزة للطباعة مع تجاوز الـ Rate Limits تلقائياً.</p>
+        </div>
+
+        <!-- حقل مفتاح الـ API المخصص (API Key / Bearer Token) -->
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">مفتاح الـ API (API Key / Bearer Token) (اختياري / حسب الخادم)</label>
+          <input type="password" id="apiKeyInput" placeholder="أدخل API Key أو Bearer Token الخاص بخادم الـ FaceID / GPU..." class="w-full px-3 py-2 border rounded-xl border-slate-300 font-mono text-left direction-ltr text-xs bg-slate-50 font-bold" />
+          <p class="text-[11px] text-slate-500 mt-1">يُرسل في الترويسات كـ Authorization: Bearer و X-API-Key مع كل طلب توليد لضمان الوصول الآمن والمصادقة.</p>
+        </div>
+
+        <!-- حقل مسار العمل المخصص بصيغة Workflow JSON Payload -->
+        <div id="customWorkflowSection" class="hidden">
+          <div class="flex justify-between items-center mb-1">
+            <label class="font-bold text-slate-700">تخصيص مسار العمل (Workflow JSON Payload) - اختياري</label>
+            <span class="text-[10px] text-blue-600 font-bold">ComfyUI / Colab API</span>
+          </div>
+          <textarea id="customWorkflowInput" rows="3" placeholder="اختياري: الصق هنا مسار العمل بصيغة JSON من ComfyUI (Save API Format)، أو اتركه فارغاً لاستخدام مسار SDXL + FaceID الافتراضي تلقائياً." class="w-full px-3 py-2 border rounded-xl border-slate-300 font-mono text-left direction-ltr text-[11px] bg-slate-50"></textarea>
+          <p class="text-[10px] text-slate-500 mt-0.5">عند ترك الحقل فارغاً، سيتم حقن مسار العمل القياسي المجهز بموديل SDXL وتثبيت وجه الطفل بنسبة 100%.</p>
+        </div>
+
+        <!-- شريط تأكيد تفعيل دمج الوجوه FaceID -->
+        <div class="bg-blue-50 border border-blue-200 rounded-xl p-2.5 flex items-center gap-2 text-[11px] text-blue-900 font-bold font-cairo">
+          <span class="text-base">✨</span>
+          <div>خاصية FaceID نشطة: يتم أخذ صورة الطفل المرفوعة وإرسالها كصورة مرجعية لإجبار النظام على تركيب ملامح وجهه الحقيقي بنسبة 100%.</div>
+        </div>
+
+        <!-- بطاقة تشغيل وتنزيل دفتر Google Colab GPU المجاني -->
+        <div class="bg-amber-50 border border-amber-300 rounded-xl p-3 flex items-center justify-between gap-3 text-xs text-amber-950 font-bold font-cairo">
+          <div>
+            <div class="font-black text-amber-900 flex items-center gap-1.5">
+              <span>⚡</span> خادم Google Colab المجاني (GPU T4 مجاني 100%)
+            </div>
+            <div class="text-[11px] text-amber-800 font-medium mt-0.5">
+              شغّل نموذج InstantID على كرت شاشة سحابي مجاني من قوقل لتحصل على رابط API فوري لمطابقة الوجوه 100%.
+            </div>
+          </div>
+          <a href="/Maktaba_Shula_Colab_FaceID.ipynb" download="Maktaba_Shula_Colab_FaceID.ipynb" class="bg-amber-600 hover:bg-amber-700 text-white font-black text-[11px] px-3 py-1.5 rounded-lg shrink-0 shadow transition-all active:scale-95">
+            تحميل الدفتر (.ipynb)
+          </a>
+        </div>
+      </div>
+
+      <div class="mt-6 flex justify-end gap-2 pt-3 border-t">
+        <button onclick="closeConfigModal()" class="px-4 py-2 rounded-xl text-slate-600 font-bold hover:bg-slate-100 text-xs">إلغاء</button>
+        <button onclick="saveApiConfig()" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-xl font-bold text-xs shadow-md">حفظ الإعدادات فوراً</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- نافذة مودال استدعاء الـ API الحقيقي والانتظار (Real API Polling Modal) -->
+  <div id="realApiModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full text-center shadow-2xl border border-slate-100 font-changa">
+      <div id="realApiIcon" class="w-16 h-16 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4 animate-spin">
+        🔄
+      </div>
+      <h3 class="text-base font-black text-slate-900 mb-1">استدعاء الـ API الحقيقي لتوليد المشاهد</h3>
+      <p id="realApiStageText" class="text-xs text-slate-600 font-semibold mb-4 font-cairo">
+        إرسال طلبات POST إلى خادم التوليد واستلام الصور الحقيقية...
+      </p>
+
+      <!-- صندوق تنبيه الأخطاء داخل المودال إن وجدت -->
+      <div id="realApiErrorBox" class="hidden mb-4 p-3 bg-red-50 border border-red-300 rounded-xl text-red-800 text-xs font-bold text-right font-cairo"></div>
+
+      <!-- شريط التقدم الفعلي -->
+      <div class="w-full bg-slate-200 rounded-full h-4 overflow-hidden mb-2 p-0.5">
+        <div id="realApiProgressBar" class="bg-gradient-to-r from-blue-600 via-teal-500 to-emerald-500 h-full rounded-full transition-all duration-300" style="width: 10%;"></div>
+      </div>
+      <div class="flex justify-between items-center text-xs font-bold text-slate-500 mb-5">
+        <span id="realApiPagesCounter">الصفحة 1 من 12</span>
+        <span id="realApiProgressPercent">10%</span>
+      </div>
+
+      <div class="bg-slate-50 rounded-xl p-3 text-[11px] text-slate-600 space-y-1 border border-slate-200 text-right mb-4 font-cairo">
+        <div>🌐 مهلة زمنية صارمة (Timeout) لمنع تعليق المتصفح نهائياً.</div>
+        <div>🖼️ في حال انقطاع الـ API، يُسجل الخطأ وتتاح أزرار إعادة المحاولة فوراً.</div>
+        <div>📑 حفظ القصة والمشاهد المكتملة دون فقدان أي بيانات.</div>
+      </div>
+
+      <div class="flex justify-center gap-2">
+        <button id="realApiCancelBtn" onclick="cancelRealApiGeneration()" class="px-4 py-2 border border-slate-300 rounded-xl text-slate-700 font-bold hover:bg-slate-100 text-xs">
+          إلغاء العملية
+        </button>
+        <button id="realApiDoneBtn" onclick="closeRealApiModal()" class="hidden px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-black text-xs shadow-md">
+          الانتقال لصفحات المجلة
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- نافذة مودال تصدير مصفوفة أوامر Google Flow بصيغة JSON Array -->
+  <div id="jsonArrayModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden font-changa">
+    <div class="bg-slate-900 text-white rounded-3xl p-6 sm:p-7 max-w-4xl w-full shadow-2xl border border-purple-500/40 text-right flex flex-col max-h-[90vh]">
+      <div class="flex justify-between items-center mb-3 border-b border-purple-500/30 pb-3">
+        <div class="flex items-center gap-2">
+          <span class="text-2xl">📦</span>
+          <div>
+            <h3 class="text-base sm:text-lg font-black text-purple-200">مصفوفة أوامر Google Flow المعيارية (JSON Array)</h3>
+            <span class="text-[11px] text-slate-400 font-cairo">جاهزة للنسخ بنقرة واحدة وللاستخدام مع روبوتات ووكلاء الذكاء الاصطناعي (AI Agents)</span>
+          </div>
+        </div>
+        <button onclick="closeJsonArrayModal()" class="text-slate-400 hover:text-white text-xl font-bold p-1">✕</button>
+      </div>
+
+      <!-- معلومات نقاط النهاية API -->
+      <div class="bg-purple-950/40 border border-purple-500/20 rounded-xl p-3 mb-3 text-xs flex flex-wrap justify-between items-center gap-2 font-cairo">
+        <div class="text-purple-300 flex flex-wrap items-center gap-1.5">
+          <span>🔗 نقاط النهاية البرمجية (REST API):</span>
+          <code class="bg-purple-900/60 px-2 py-0.5 rounded text-amber-300 font-mono text-[11px]">GET /api/prompts/json</code>
+          <code class="bg-purple-900/60 px-2 py-0.5 rounded text-indigo-300 font-mono text-[11px]">GET /api/agent/prompts</code>
+        </div>
+        <div class="text-emerald-400 font-bold text-[11px]">
+          ✓ 12 مشهداً مهندساً (Imagen 3 / Google Flow)
+        </div>
+      </div>
+
+      <!-- مربع عرض الكود -->
+      <div class="relative flex-1 overflow-hidden rounded-xl border border-slate-700 bg-slate-950 min-h-[300px]">
+        <textarea id="jsonArrayViewer" readonly class="w-full h-full p-4 font-mono text-xs text-purple-200 bg-slate-950 resize-none outline-none selection:bg-purple-600 direction-ltr text-left" rows="16"></textarea>
+      </div>
+
+      <!-- أزرار الإجراءات -->
+      <div class="flex flex-wrap justify-between items-center gap-3 mt-4 pt-3 border-t border-purple-500/30">
+        <div class="flex items-center gap-2">
+          <button onclick="copyJsonArrayToClipboard()" class="bg-purple-600 hover:bg-purple-500 text-white font-black text-xs py-2.5 px-5 rounded-xl flex items-center gap-2 shadow-lg transition-all active:scale-95">
+            <span>📋</span> نسخ مصفوفة JSON بالكامل
+          </button>
+          <button onclick="downloadJsonArrayFile()" class="bg-slate-800 hover:bg-slate-700 text-purple-200 border border-purple-500/40 font-bold text-xs py-2.5 px-4 rounded-xl flex items-center gap-2 transition-all active:scale-95">
+            <span>💾</span> تنزيل flow-prompts.json
+          </button>
+        </div>
+        <button onclick="closeJsonArrayModal()" class="text-slate-400 hover:text-white text-xs font-bold px-3 py-2">
+          إغلاق
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="bg-slate-900 text-slate-400 py-4 text-center text-xs border-t border-slate-800 mt-12">
+    مكتبة الشعلة • نظام توليد مجلات وقصص الأطفال بالربط البرمجي الحقيقي Real API • 2026
+  </footer>
+
+  <script>
+    const currentProject = {
+      child: {
+        name: 'عمر',
+        age: 7,
+        gender: 'boy',
+        favoriteHero: 'سبايدرمان (Spider-Man)',
+        artStyle: '3d-pixar',
+        storySetting: 'crime-fighting',
+        customStorySetting: '',
+        photoUrl: null,
+        fatherPhotoUrl: null,
+        motherPhotoUrl: null,
+        includeParentsInStory: true,
+        behaviorDescription: 'يقضي وقتا طويلا في اللعب ويهمل أداء واجباته المدرسية وتجهيز حقيبته.',
+        positiveAlternative: 'العلم والاجتهاد سر قوة الأبطال وتنظيم الوقت',
+        parentName: 'أبو عمر وأم عمر',
+        parentDedication: 'يا بطلنا الغالي عمر نحن فخورون بذكائك دائما وواثقون أنك ستكون بطلا متميزا.'
+      },
+      pages: [],
+      currentPreviewIndex: 0
+    };
+
+    function handleStorySettingChange(setting) {
+      if (currentProject && currentProject.child) {
+        currentProject.child.storySetting = setting;
+      }
+      const settings = ['crime-fighting', 'jungle-safari', 'space-odyssey', 'fantasy-magic', 'realistic-daily'];
+      settings.forEach(s => {
+        const card = document.getElementById('setting-card-' + s);
+        if (card) {
+          if (s === setting) {
+            card.classList.remove('border-slate-200', 'bg-white');
+            card.classList.add('border-purple-600', 'bg-purple-50/60');
+          } else {
+            card.classList.remove('border-purple-600', 'bg-purple-50/60');
+            card.classList.add('border-slate-200');
+          }
+        }
+      });
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.getElementById(tabId).classList.remove('hidden');
+
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('bg-blue-600', 'text-white', 'shadow-sm');
+        btn.classList.add('text-slate-600', 'hover:bg-slate-100');
+      });
+
+      const activeBtn = document.getElementById('btn-' + tabId);
+      if (activeBtn) {
+        activeBtn.classList.remove('text-slate-600', 'hover:bg-slate-100');
+        activeBtn.classList.add('bg-blue-600', 'text-white', 'shadow-sm');
+      }
+
+      if (tabId === 'tab-preview') {
+        renderCurrentPreviewPage();
+      }
+      if (tabId === 'tab-flow') {
+        renderFlowStudio();
+      }
+    }
+
+    // ==========================================
+    // منظومة استوديو وجسر Google Flow Studio Bridge
+    // ==========================================
+
+    function showFlowToast(message, isSuccess = true) {
+      let toast = document.getElementById('flowToast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'flowToast';
+        toast.className = 'fixed bottom-6 right-6 z-50 py-3 px-5 rounded-2xl shadow-2xl font-changa text-xs font-black transition-all duration-300 transform translate-y-20 opacity-0 flex items-center gap-2';
+        document.body.appendChild(toast);
+      }
+      toast.className = `fixed bottom-6 right-6 z-50 py-3 px-5 rounded-2xl shadow-2xl font-changa text-xs font-black transition-all duration-300 transform translate-y-0 opacity-100 flex items-center gap-2.5 ${isSuccess ? 'bg-slate-900 text-purple-200 border border-purple-400' : 'bg-red-900 text-white border border-red-500'}`;
+      toast.innerHTML = `<span>${isSuccess ? '✨' : '⚠️'}</span> ${message}`;
+      
+      clearTimeout(toast._timer);
+      toast._timer = setTimeout(() => {
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 3500);
+    }
+
+    function launchFlowRobotOneClick() {
+      window.open('https://labs.google/flow', '_blank');
+      showFlowToast('🚀 تم فتح موقع Google Flow في تبويب جديد! اضغط على زر الروبوت في شريط المفضلة لتشغيل الأتمتة فوراً.');
+    }
+
+    function copyBookmarkletCode(event) {
+      if (event) event.preventDefault();
+      const code = "javascript:(function(){const s=document.createElement('script');s.src='http://localhost:3000/flow-copilot.js?t='+Date.now();document.body.appendChild(s);})();";
+      navigator.clipboard.writeText(code).then(() => {
+        alert('🎉 تم نسخ كود روبوت Google Flow بنجاح!\n\nكيف تستخدمه؟\n1. اسحب الزر إلى شريط الإشارات (Bookmarks Bar) في متصفح كروم.\n2. أو في صفحة Google Flow اضغط F12 والصق الكود في الـ Console واضغط Enter.\nسيظهر لك الروبوت فوراً في قوقل فلو ليرسل الأوامر وينقل الصور للمكتبة بنقرة واحدة!');
+      });
+    }
+
+    function copyConsoleSnippet() {
+      const snippet = "const s = document.createElement('script'); s.src = 'http://localhost:3000/flow-copilot.js?t=' + Date.now(); document.body.appendChild(s);";
+      navigator.clipboard.writeText(snippet).then(() => {
+        showFlowToast('📋 تم نسخ كود الروبوت! في صفحة Google Flow اضغط F12 والصقه في Console واضغط Enter.');
+      });
+    }
+
+    function downloadChildReferencePhoto() {
+      const photoUrl = currentProject.child.photoUrl || '/sample-child.jpg';
+      const a = document.createElement('a');
+      a.href = photoUrl;
+      a.download = `character-reference-${currentProject.child.name || 'child'}.jpg`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      showFlowToast('تم تحميل صورة الطفل المرجعية بنجاح! اسحبها إلى نافذة Google Flow.');
+    }
+
+    function formatEnglishChildName(arabicName, isGirl) {
+      if (!arabicName || !arabicName.trim()) return isGirl ? 'Layla' : 'Omar';
+      const map = { 'عمر': 'Omar', 'ليلى': 'Layla', 'أحمد': 'Ahmed', 'احمد': 'Ahmed', 'علي': 'Ali', 'فاطمة': 'Fatima', 'سارة': 'Sara', 'ساره': 'Sara', 'يوسف': 'Youssef', 'مريم': 'Mariam', 'خالد': 'Khaled', 'نور': 'Nour', 'محمد': 'Mohammed', 'زين': 'Zain', 'زينة': 'Zeina', 'سلمى': 'Salma' };
+      const trimmed = arabicName.trim();
+      return map[trimmed] || (/^[a-zA-Z\s]+$/.test(trimmed) ? trimmed : (isGirl ? 'Layla' : 'Omar'));
+    }
+
+    function getChildAnchorText() {
+      const child = currentProject.child;
+      const isGirl = child.gender === 'girl';
+      const genderTerm = isGirl ? 'girl' : 'boy';
+      const age = child.age || 7;
+      const name = formatEnglishChildName(child.name, isGirl);
+      const traits = child.visualTraits || {};
+      const hair = traits.hairType || (isGirl ? 'long silky dark hair styled in twin braids' : 'short neat dark crop haircut with clean fade on sides and temples');
+      const face = traits.faceFeatures || 'large expressive dark almond-shaped eyes, arched neat dark eyebrows, slender oval face with rounded child cheeks, warm light-olive skin tone, sweet gentle confident smile';
+      const clothes = traits.clothingStyle || (isGirl ? 'stylish colorful adventurer jacket' : 'smart black collared polo shirt with a black-and-white horizontally striped sweater draped neatly over shoulders and blue denim jeans');
+
+      return `an authentic ${age}-year-old Arab ${genderTerm} named ${name}, authentic child proportions, haircut: ${hair}, face & skin: ${face}, signature clothes: ${clothes}, consistent facial features and hairstyle matching character reference`;
+    }
+
+    function copyChildAnchorPrompt() {
+      const anchor = getChildAnchorText();
+      navigator.clipboard.writeText(anchor).then(() => {
+        showFlowToast('تم نسخ وصف البصمة البصرية للشخصية المرجعية بنجاح! 📋');
+      }).catch(() => {
+        showFlowToast('تعذر النسخ تلقائياً، يرجى النسخ اليدوي.');
+      });
+    }
+
+    function getFlowPromptForPage(page) {
+      if (page.flowPromptEnglish && page.flowPromptEnglish.trim()) {
+        return page.flowPromptEnglish.trim();
+      }
+      if (page.imagePromptEnglish && page.imagePromptEnglish.trim()) {
+        return page.imagePromptEnglish.trim();
+      }
+      const childAnchor = getChildAnchorText();
+      return `Vibrant 3D animated film render, Disney Pixar studio aesthetic, 8k octane render. Front center: ${childAnchor}, in dynamic storytelling action scene, cinematic lighting.`;
+    }
+
+    // دوال تصدير وإدارة مصفوفة الأوامر JSON Array
+    let cachedJsonArrayText = '';
+
+    async function openJsonArrayModal() {
+      const modal = document.getElementById('jsonArrayModal');
+      const viewer = document.getElementById('jsonArrayViewer');
+      if (!modal || !viewer) return;
+      modal.classList.remove('hidden');
+
+      viewer.value = 'جاري جلب مصفوفة الأوامر المهندسة من الخادم...';
+      try {
+        const res = await fetch('/api/prompts/json');
+        if (res.ok) {
+          const data = await res.json();
+          cachedJsonArrayText = JSON.stringify(data, null, 2);
+          viewer.value = cachedJsonArrayText;
+        } else {
+          viewer.value = '// تعذر جلب الأوامر من /api/prompts/json';
+        }
+      } catch (e) {
+        viewer.value = '// خطأ في الاتصال: ' + e.message;
+      }
+    }
+
+    function closeJsonArrayModal() {
+      const modal = document.getElementById('jsonArrayModal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function copyJsonArrayToClipboard() {
+      const viewer = document.getElementById('jsonArrayViewer');
+      const text = (viewer && viewer.value) || cachedJsonArrayText;
+      if (!text) return;
+      navigator.clipboard.writeText(text).then(() => {
+        showFlowToast('تم نسخ مصفوفة الأوامر JSON بالكامل إلى الحافظة! 📋');
+      }).catch(() => {
+        showFlowToast('تعذر النسخ التلقائي');
+      });
+    }
+
+    function downloadJsonArrayFile() {
+      const viewer = document.getElementById('jsonArrayViewer');
+      const text = (viewer && viewer.value) || cachedJsonArrayText;
+      if (!text) return;
+      const blob = new Blob([text], { type: 'application/json;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `flow-prompts-${currentProject?.child?.name || 'child'}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showFlowToast('تم تنزيل ملف flow-prompts.json بنجاح! 💾');
+    }
+
+    // دالة تصدير كتيب المجلة A5 بنظام الأتمتة الكاملة
+    async function triggerAutomatedA5PdfExport() {
+      const btn = document.getElementById('btnAgentPdfExport');
+      const origHtml = btn ? btn.innerHTML : '';
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span>⏳</span> جاري تصدير A5 PDF...';
+      }
+      showFlowToast('جاري تصدير وتجهيز كتيب A5 بنظام الملازم المزدوجة عبر محرك PDF...');
+      try {
+        const res = await fetch('/api/agent/export-pdf');
+        const data = await res.json();
+        if (data && data.success && data.pdfUrl) {
+          showFlowToast('✅ تم إنشاء ملف الكتيب A5 PDF بنجاح! جاري التنزيل...');
+          const a = document.createElement('a');
+          a.href = data.pdfUrl + '?t=' + Date.now();
+          a.download = 'maktaba-booklet-a5.pdf';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        } else {
+          showFlowToast('⚠️ ' + (data.error || 'تعذر تصدير الـ PDF تلقائياً'));
+        }
+      } catch (err) {
+        showFlowToast('❌ خطأ في تصدير PDF: ' + err.message);
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = origHtml;
+        }
+      }
+    }
+
+    function copyFlowPrompt(pageNum) {
+      const page = currentProject.pages.find(p => p.pageNumber === pageNum);
+      if (!page) return;
+      const prompt = getFlowPromptForPage(page);
+      navigator.clipboard.writeText(prompt).then(() => {
+        showFlowToast(`تم نسخ أمر Google Flow لصفحة ${pageNum} بنجاح! 📋`);
+      }).catch(() => {
+        showFlowToast(`تعذر النسخ التلقائي لصفحة ${pageNum}`);
+      });
+    }
+
+    async function handleFlowImageFileSelect(event, pageNum) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      await uploadFlowImageForPage(pageNum, file);
+    }
+
+    async function uploadFlowImageForPage(pageNum, file) {
+      showFlowToast(`جاري استيراد وحفظ صورة الصفحة ${pageNum}... ⏳`);
+      const reader = new FileReader();
+      reader.onload = async function(e) {
+        const dataUrl = e.target.result;
+        try {
+          const res = await fetch('/api/upload-page-image', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              pageNumber: pageNum,
+              imageData: dataUrl
+            })
+          });
+          const result = await res.json();
+          if (result.success && result.imageUrl) {
+            const page = currentProject.pages.find(p => p.pageNumber === pageNum);
+            if (page) {
+              page.imageUrl = result.imageUrl;
+              page.status = 'completed';
+              delete page.error;
+            }
+            renderPagesGrid();
+            renderCurrentPreviewPage();
+            renderFlowStudio();
+            showFlowToast(`✅ تم استيراد صورة Google Flow بنجاح لصفحة ${pageNum}! تم تحديث المجلة والطباعة.`);
+          } else {
+            showFlowToast(`❌ فشل استيراد الصورة: ${result.error || 'خطأ غير معروف'}`, false);
+          }
+        } catch (err) {
+          showFlowToast(`❌ خطأ في رفع الصورة: ${err.message}`, false);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+
+    async function pasteImageFromClipboard(pageNum) {
+      try {
+        if (!navigator.clipboard || !navigator.clipboard.read) {
+          alert('يرجى السماح بالوصول للحافظة في المتصفح، أو استخدم زر استيراد صورة.');
+          return;
+        }
+        showFlowToast(`جاري قراءة الصورة من الحافظة لصفحة ${pageNum}... 📋`);
+        const items = await navigator.clipboard.read();
+        let foundImage = false;
+        for (const item of items) {
+          for (const type of item.types) {
+            if (type.startsWith('image/')) {
+              const blob = await item.getType(type);
+              await uploadFlowImageForPage(pageNum, blob);
+              foundImage = true;
+              return;
+            }
+          }
+        }
+        if (!foundImage) {
+          showFlowToast('لم يتم العثور على صورة في الحافظة! في Google Flow، انقر باليمين على الصورة واختر (Copy Image) ثم اضغط هنا.', false);
+        }
+      } catch (err) {
+        showFlowToast(`تعذر قراءة الحافظة: ${err.message}. يمكنك استخدام زر استيراد صورة أو الضغط على Ctrl+V.`, false);
+      }
+    }
+
+    // الاستماع لضغطات لوحة المفاتيح Ctrl+V للصق المباشر السريع
+    window.addEventListener('paste', async (e) => {
+      const items = e.clipboardData?.items;
+      if (!items) return;
+      for (const item of items) {
+        if (item.type && item.type.startsWith('image/')) {
+          const file = item.getAsFile();
+          if (file) {
+            const targetPageNum = (currentProject.currentPreviewIndex !== undefined && currentProject.pages[currentProject.currentPreviewIndex])
+              ? currentProject.pages[currentProject.currentPreviewIndex].pageNumber
+              : 1;
+            
+            const confirmed = confirm(`هل ترغب في وضع الصورة المنسوخة من الحافظة في صفحة ${targetPageNum} (${currentProject.pages.find(p => p.pageNumber === targetPageNum)?.title || ''})؟`);
+            if (confirmed) {
+              await uploadFlowImageForPage(targetPageNum, file);
+            }
+          }
+          break;
+        }
+      }
+    });
+
+    function renderFlowStudio() {
+      // 1. تحديث ملخص البصمة البصرية في أعلى الشاشة
+      const child = currentProject.child;
+      const thumbEl = document.getElementById('flowChildThumb');
+      if (thumbEl) thumbEl.src = child.photoUrl || '/sample-child.jpg';
+      
+      const nameEl = document.getElementById('flowChildName');
+      if (nameEl) nameEl.innerText = `البطل: ${child.name || 'عمر'}`;
+      
+      const ageEl = document.getElementById('flowChildAge');
+      if (ageEl) ageEl.innerText = `${child.age || 7} سنوات • ${child.gender === 'girl' ? 'بنت' : 'ولد'}`;
+
+      const anchorEl = document.getElementById('flowAnchorPreview');
+      if (anchorEl) anchorEl.innerText = getChildAnchorText();
+
+      // 2. تحديث قائمة بطاقات الصفحات الـ 12
+      const container = document.getElementById('flowPagesContainer');
+      if (!container) return;
+      container.innerHTML = '';
+
+      if (!currentProject.pages || currentProject.pages.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full p-8 text-center bg-slate-50 rounded-2xl border-2 border-dashed border-slate-300 text-slate-500">
+            <div class="text-4xl mb-2">📖</div>
+            <div class="font-black text-sm">لم يتم تأليف القصة بعد</div>
+            <p class="text-xs text-slate-400 mt-1">ابدأ بتأليف القصة من التبويب الأول ليتم تجهيز الأوامر الـ 12 لـ Google Flow تلقائياً.</p>
+          </div>
+        `;
+        return;
+      }
+
+      currentProject.pages.forEach(page => {
+        const hasImg = page.imageUrl && page.imageUrl !== child.photoUrl && !page.imageUrl.includes('placeholder');
+        const promptText = getFlowPromptForPage(page);
+
+        const card = document.createElement('div');
+        card.className = 'border-2 border-purple-200 hover:border-purple-500 rounded-2xl p-4 bg-purple-50/20 shadow-sm transition-all flex flex-col justify-between font-changa';
+        
+        card.innerHTML = `
+          <div>
+            <!-- ترويسة بطاقة الصفحة -->
+            <div class="flex justify-between items-center mb-3">
+              <div class="flex items-center gap-2">
+                <span class="bg-purple-900 text-purple-200 text-xs font-black px-2.5 py-1 rounded-lg">
+                  صفحة ${page.pageNumber}
+                </span>
+                <span class="text-xs font-black text-slate-800">${page.title || 'مشهد المجلة'}</span>
+              </div>
+              <span class="text-[11px] font-extrabold px-2 py-0.5 rounded border ${hasImg ? 'bg-emerald-100 text-emerald-800 border-emerald-300' : 'bg-amber-100 text-amber-800 border-amber-300'}">
+                ${hasImg ? 'صورة معتمدة ✅' : 'بانتظار التوليد ⏳'}
+              </span>
+            </div>
+
+            <!-- معاينة الصورة المصغرة الحالية إن وجدت -->
+            <div class="flex gap-3 mb-3 items-center bg-white p-2.5 rounded-xl border border-purple-100">
+              <div class="w-20 h-20 rounded-lg overflow-hidden bg-slate-100 shrink-0 border border-slate-200 flex items-center justify-center">
+                ${hasImg ? `
+                  <img src="${page.imageUrl}" class="w-full h-full object-cover" alt="معاينة الصفحة">
+                ` : `
+                  <span class="text-2xl text-slate-300">🎨</span>
+                `}
+              </div>
+              <div class="text-xs text-slate-600 space-y-1 flex-1">
+                <div class="font-bold text-slate-800 line-clamp-1">${page.textArabic ? page.textArabic.slice(0, 60) + '...' : 'المشهد جاهز'}</div>
+                <div class="text-[11px] text-purple-700 font-semibold">
+                  ${hasImg ? 'الصورة مستوردة وتظهر بالمعاينة والطباعة' : 'انسخ الأمر وألصقه في Google Flow ثم انسخ الصورة والصقها هنا'}
+                </div>
+              </div>
+            </div>
+
+            <!-- مربع أمر قوقل فلو الجاهز للنسخ -->
+            <div class="mb-3">
+              <div class="flex justify-between items-center text-[11px] text-slate-500 font-bold mb-1">
+                <span>أمر Google Flow المخصص (Prompt):</span>
+                <span class="text-purple-600 font-mono text-[10px]">Imagen 3 Engine</span>
+              </div>
+              <div class="bg-slate-900 text-purple-100 p-2.5 rounded-xl text-[11px] font-mono leading-relaxed line-clamp-3 text-left direction-ltr select-all border border-purple-900">
+                ${promptText}
+              </div>
+            </div>
+          </div>
+
+          <!-- أزرار الإجراءات للبطاقة -->
+          <div class="pt-3 border-t border-purple-100 flex flex-wrap gap-2 justify-between items-center">
+            <button onclick="copyFlowPrompt(${page.pageNumber})" class="bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs py-2 px-3 rounded-xl flex items-center gap-1.5 shadow-sm transition-all active:scale-95">
+              <span>📋</span> نسخ أمر Flow
+            </button>
+
+            <div class="flex items-center gap-2">
+              <button onclick="pasteImageFromClipboard(${page.pageNumber})" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs py-2 px-3 rounded-xl flex items-center gap-1.5 shadow-sm transition-all active:scale-95" title="لصق الصورة المنسوخة من Google Flow مباشرة بدون حفظ ملف">
+                <span>📋</span> لصق الصورة
+              </button>
+
+              <label class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-2 px-3 rounded-xl flex items-center gap-1.5 shadow-sm cursor-pointer transition-all active:scale-95" title="رفع ملف الصورة من جهازك">
+                <span>📥</span> استيراد
+                <input type="file" accept="image/*" class="hidden" onchange="handleFlowImageFileSelect(event, ${page.pageNumber})">
+              </label>
+
+              <button onclick="retryPageGeneration(${page.pageNumber})" title="توليد مباشر بالـ API الحالي" class="bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs py-2 px-2.5 rounded-xl flex items-center gap-1 shadow-sm transition-all">
+                <span>🔄</span>
+              </button>
+            </div>
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+    }
+
+    async function startGoogleImagenGeneration() {
+      try {
+        const confRes = await fetch('/api/config');
+        const confData = await confRes.json();
+        const currentKey = (confData.config && confData.config.apiKey) || '';
+
+        if (!currentKey) {
+          alert('لتشغيل التوليد المباشر عبر Google Imagen 3 (محرك Google Flow)، يرجى إدخال مفتاح Google AI Studio API أولاً (مجاني من aistudio.google.com).');
+          openConfigModal();
+          const apiSelect = document.getElementById('apiTypeSelect');
+          if (apiSelect) {
+            apiSelect.value = 'google-imagen';
+            handleApiTypeChange();
+          }
+          return;
+        }
+
+        await fetch('/api/config', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            endpointUrl: 'https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict',
+            customApiUrl: 'https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict',
+            apiType: 'google-imagen',
+            apiKey: currentKey
+          })
+        });
+
+        showFlowToast('🚀 تم تفعيل محرك Google Imagen 3! جاري بدء التوليد المتسلسل للمشاهد...');
+        startRealApiGeneration();
+      } catch (err) {
+        showFlowToast('حدث خطأ في تشغيل Google Imagen: ' + err.message, false);
+      }
+    }
+
+    function toggleParentsOption() {
+      currentProject.child.includeParentsInStory = document.getElementById('includeParentsCheck').checked;
+    }
+
+    function handlePhotoUpload(event, type) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const dataUrl = e.target.result;
+        if (type === 'child') {
+          currentProject.child.photoUrl = dataUrl;
+          document.getElementById('childPhotoPreview').src = dataUrl;
+          document.getElementById('childPhotoPlaceholder').classList.add('hidden');
+          document.getElementById('childPhotoPreviewContainer').classList.remove('hidden');
+        } else if (type === 'father') {
+          currentProject.child.fatherPhotoUrl = dataUrl;
+          document.getElementById('fatherPhotoPreview').src = dataUrl;
+          document.getElementById('fatherPhotoPlaceholder').classList.add('hidden');
+          document.getElementById('fatherPhotoPreviewContainer').classList.remove('hidden');
+        } else if (type === 'mother') {
+          currentProject.child.motherPhotoUrl = dataUrl;
+          document.getElementById('motherPhotoPreview').src = dataUrl;
+          document.getElementById('motherPhotoPlaceholder').classList.add('hidden');
+          document.getElementById('motherPhotoPreviewContainer').classList.remove('hidden');
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function setVisualTraitsPreset(type) {
+      if (type === 'current_boy') {
+        document.getElementById('childHairStyle').value = 'شعر قصير كيرلي مموج داكن من الأعلى مع تدريج ناعم على الجانبين (Curly Fade)';
+        document.getElementById('childFaceFeatures').value = 'عيون لوزية داكنة واسعة، حواجب مقوسة، وجه بيضاوي ناعم، بشرة حنطية عربية، وابتسامة هادئة واثقة';
+        document.getElementById('childClothingStyle').value = 'قميص أسود أنيق مع كنزة صوفية مخططة أفقياً بالأبيض والأسود معقودة فوق الكتفين وبنطال جينز أزرق';
+      } else if (type === 'girl') {
+        document.getElementById('childHairStyle').value = 'شعر ناعم طويل مموج داكن مربوط في ضفيرتين أنيقتين مع غرة ناعمة';
+        document.getElementById('childFaceFeatures').value = 'عيون واسعة لامعة داكنة، ابتسامة رقيقة مشرقة، وبشرة حنطية نضرة';
+        document.getElementById('childClothingStyle').value = 'سترة مغامرة وردية أنيقة مع قميص أبيض وبنطال جينز أزرق';
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      // فحص وجود صورة الطفل وتفعيل المعاينة تلقائياً
+      const testImg = new Image();
+      testImg.onload = function() {
+        currentProject.child.photoUrl = '/sample-child.jpg';
+        const preview = document.getElementById('childPhotoPreview');
+        if (preview) {
+          preview.src = '/sample-child.jpg';
+          document.getElementById('childPhotoPlaceholder').classList.add('hidden');
+          document.getElementById('childPhotoPreviewContainer').classList.remove('hidden');
+        }
+      };
+      testImg.src = '/sample-child.jpg';
+    });
+
+    // إدارة نافذة إعدادات رابط الـ API ومسارات العمل
+    async function openConfigModal() {
+      try {
+        const res = await fetch('/api/config');
+        const data = await res.json();
+        if (data.success && data.config) {
+          document.getElementById('apiEndpointInput').value = data.config.customApiUrl || data.config.endpointUrl || '';
+          document.getElementById('apiTypeSelect').value = data.config.apiType || 'cloud-ai';
+          const apiKeyInput = document.getElementById('apiKeyInput');
+          if (apiKeyInput) apiKeyInput.value = data.config.apiKey || '';
+          const wfInput = document.getElementById('customWorkflowInput');
+          if (wfInput) wfInput.value = data.config.customWorkflowJson || '';
+        }
+      } catch (e) {}
+      const statusBox = document.getElementById('connectionTestStatus');
+      if (statusBox) statusBox.classList.add('hidden');
+      handleApiTypeChange();
+      document.getElementById('configModal').classList.remove('hidden');
+    }
+
+    function handleApiTypeChange() {
+      const type = document.getElementById('apiTypeSelect').value;
+      const input = document.getElementById('apiEndpointInput');
+      const help = document.getElementById('endpointHelpText');
+      const wfSection = document.getElementById('customWorkflowSection');
+
+      if (type === 'google-imagen' || type === 'flow-api') {
+        input.value = 'https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict';
+        if (help) help.innerHTML = '✨ <strong>محرك قوقل فلو Google Flow الرسمي (Google Imagen 3)</strong>: أدخل مفتاحك المجاني من <a href="https://aistudio.google.com" target="_blank" class="text-blue-600 underline font-black">Google AI Studio</a> في حقل API Key أدناه لتوليد صور سينمائية فائقة الثبات بدون بطاقة ائتمان.';
+        if (wfSection) wfSection.classList.add('hidden');
+      } else if (type === 'cloud-ai') {
+        input.value = 'https://image.pollinations.ai/prompt';
+        if (help) help.innerText = 'يتم التوليد والرسم عبر السحابة فوراً مع حقن الملامح البصرية (الشعر والكنزة المخططة) وتخطي الـ Rate Limits والتخزين المحلي.';
+        if (wfSection) wfSection.classList.add('hidden');
+      } else if (type === 'fal-ai') {
+        input.value = 'https://queue.fal.run/fal-ai/instant-id';
+        if (help) help.innerText = 'رابط خادم Fal.ai InstantID لتطبيق ملامح وجه الطفل من الصورة بنسبة 100%، يرجى إدخال مفتاح الـ API Key في الحقل أدناه.';
+        if (wfSection) wfSection.classList.add('hidden');
+      } else if (type === 'comfyui') {
+        if (!input.value || input.value.includes('pollinations.ai') || input.value.includes('fal.run') || input.value.includes('generativelanguage')) {
+          input.value = 'http://127.0.0.1:8188/prompt';
+        }
+        if (help) help.innerText = 'أدخل رابط خادم ComfyUI المحلي أو رابط نفق Google Colab (ngrok / localtunnel / cloudflared).';
+        if (wfSection) wfSection.classList.remove('hidden');
+      } else if (type === 'custom') {
+        if (help) help.innerText = 'رابط الـ Webhook أو REST API المخصص لاستقبال Workflow JSON Payload ودعم FaceID / IP-Adapter.';
+        if (wfSection) wfSection.classList.remove('hidden');
+      }
+      const statusBox = document.getElementById('connectionTestStatus');
+      if (statusBox) statusBox.classList.add('hidden');
+    }
+
+    function closeConfigModal() {
+      document.getElementById('configModal').classList.add('hidden');
+    }
+
+    async function saveApiConfig() {
+      const endpointUrl = document.getElementById('apiEndpointInput').value.trim();
+      const apiType = document.getElementById('apiTypeSelect').value;
+      const apiKey = document.getElementById('apiKeyInput') ? document.getElementById('apiKeyInput').value.trim() : '';
+      const wfInput = document.getElementById('customWorkflowInput');
+      const customWorkflowJson = wfInput ? wfInput.value.trim() : '';
+
+      try {
+        const res = await fetch('/api/config', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            endpointUrl,
+            customApiUrl: endpointUrl,
+            apiKey,
+            apiType,
+            customWorkflowJson
+          })
+        });
+        const data = await res.json();
+        if (data.success) {
+          const engineLabel = apiType === 'google-imagen'
+            ? 'محرك Google Flow / Imagen 3 الرسمي'
+            : (apiType === 'cloud-ai' ? 'التوليد السحابي الفوري' : endpointUrl);
+          alert('تم تفعيل وحفظ إعدادات التوليد بنجاح! (' + engineLabel + ')');
+          closeConfigModal();
+        }
+      } catch (err) {
+        alert('حدث خطأ أثناء حفظ الإعدادات: ' + err.message);
+      }
+    }
+
+    // فحص الاتصال الحي بالخادم الخارجي مع دعم مفتاح API
+    async function testApiConnection() {
+      const url = document.getElementById('apiEndpointInput').value.trim();
+      const apiKey = document.getElementById('apiKeyInput') ? document.getElementById('apiKeyInput').value.trim() : '';
+      const apiType = document.getElementById('apiTypeSelect') ? document.getElementById('apiTypeSelect').value : '';
+      const statusBox = document.getElementById('connectionTestStatus');
+      const btn = document.getElementById('btnTestConn');
+      statusBox.classList.remove('hidden');
+      statusBox.className = 'mt-2 p-3 rounded-xl text-xs font-bold font-cairo bg-blue-50 text-blue-800 border border-blue-200';
+      statusBox.innerHTML = '🔄 جاري فحص الاتصال بالخادم والمفتاح ومحرك الرسم...';
+      btn.disabled = true;
+
+      try {
+        const res = await fetch('/api/test-connection?url=' + encodeURIComponent(url) + '&apiKey=' + encodeURIComponent(apiKey) + '&apiType=' + encodeURIComponent(apiType));
+        const data = await res.json();
+        if (data.success) {
+          statusBox.className = 'mt-2 p-3 rounded-xl text-xs font-bold font-cairo bg-emerald-50 text-emerald-800 border border-emerald-300';
+          statusBox.innerHTML = `✅ ${data.message || 'الاتصال ناجح ومستقر! الخادم متصل وجاهز لتوليد الصور.'}`;
+        } else {
+          statusBox.className = 'mt-2 p-3 rounded-xl text-xs font-bold font-cairo bg-red-50 text-red-800 border border-red-300';
+          statusBox.innerHTML = `❌ ${data.error || 'تعذر الاتصال بالخادم. تأكد من مراجعة الرابط ومفتاح API.'}`;
+        }
+      } catch (err) {
+        statusBox.className = 'mt-2 p-3 rounded-xl text-xs font-bold font-cairo bg-red-50 text-red-800 border border-red-300';
+        statusBox.innerHTML = `❌ خطأ في الاتصال: ${err.message}`;
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    let isGenerationAborted = false;
+
+    function cancelRealApiGeneration() {
+      isGenerationAborted = true;
+      const stageText = document.getElementById('realApiStageText');
+      if (stageText) stageText.innerText = 'تم إلغاء عملية التوليد بواسطة المستخدم.';
+      setTimeout(() => {
+        closeRealApiModal();
+      }, 500);
+    }
+
+    function closeRealApiModal() {
+      document.getElementById('realApiModal').classList.add('hidden');
+      renderPagesGrid();
+      renderCurrentPreviewPage();
+      updateStoryStatusBanner();
+      switchTab('tab-story');
+    }
+
+    // إرسال طلبات الـ Fetch الحقيقية لكل مشهد وصفحة مع مهلة صارمة ومعالجة الأخطاء
+    async function startRealApiGeneration() {
+      isGenerationAborted = false;
+
+      // 1. جمع البيانات المدخلة
+      currentProject.child.name = document.getElementById('childName').value || 'عمر';
+      currentProject.child.age = parseInt(document.getElementById('childAge').value) || 7;
+      currentProject.child.gender = document.getElementById('childGender').value;
+      currentProject.child.favoriteHero = document.getElementById('favoriteHero').value || 'سبايدرمان';
+      currentProject.child.artStyle = document.querySelector('input[name="artStyle"]:checked').value;
+      currentProject.child.storySetting = document.querySelector('input[name="storySetting"]:checked')?.value || 'crime-fighting';
+      currentProject.child.customStorySetting = document.getElementById('customStorySetting')?.value?.trim() || '';
+      currentProject.child.behaviorDescription = document.getElementById('behaviorDescription').value;
+      currentProject.child.positiveAlternative = document.getElementById('positiveAlternative').value;
+      currentProject.child.parentName = document.getElementById('parentName').value;
+      currentProject.child.parentDedication = document.getElementById('parentDedication').value;
+      currentProject.child.includeParentsInStory = document.getElementById('includeParentsCheck').checked;
+      currentProject.child.visualTraits = {
+        hairStyle: document.getElementById('childHairStyle')?.value || '',
+        faceFeatures: document.getElementById('childFaceFeatures')?.value || '',
+        clothingStyle: document.getElementById('childClothingStyle')?.value || ''
+      };
+
+      // فتح نافذة التقدم الحقيقية وإعادة ضبطها
+      const modal = document.getElementById('realApiModal');
+      const progressBar = document.getElementById('realApiProgressBar');
+      const progressPercent = document.getElementById('realApiProgressPercent');
+      const stageText = document.getElementById('realApiStageText');
+      const pagesCounter = document.getElementById('realApiPagesCounter');
+      const errorBox = document.getElementById('realApiErrorBox');
+      const cancelBtn = document.getElementById('realApiCancelBtn');
+      const doneBtn = document.getElementById('realApiDoneBtn');
+      const icon = document.getElementById('realApiIcon');
+
+      errorBox.classList.add('hidden');
+      errorBox.innerHTML = '';
+      cancelBtn.classList.remove('hidden');
+      doneBtn.classList.add('hidden');
+      icon.className = 'w-16 h-16 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4 animate-spin';
+      icon.innerText = '🔄';
+
+      modal.classList.remove('hidden');
+
+      try {
+        // 2. أول طلب شبكي حقيقي: توليد نصوص ومشاهد القصة التربوية بدون تشكيل (4-6 أسطر)
+        stageText.innerText = 'تأليف القصة التربوية بدون تشكيل (4 إلى 6 أسطر غنية بالأحداث)...';
+        progressBar.style.width = '10%';
+        progressPercent.innerText = '10%';
+
+        const storyController = new AbortController();
+        const storyTimeout = setTimeout(() => storyController.abort(), 12000);
+
+        const storyResponse = await fetch('/api/generate-story-end-to-end', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          signal: storyController.signal,
+          body: JSON.stringify({
+            childName: currentProject.child.name,
+            childAge: currentProject.child.age,
+            childGender: currentProject.child.gender,
+            favoriteHero: currentProject.child.favoriteHero,
+            artStyle: currentProject.child.artStyle,
+            storySetting: currentProject.child.storySetting,
+            customStorySetting: currentProject.child.customStorySetting,
+            childPhotoUrl: currentProject.child.photoUrl,
+            fatherPhotoUrl: currentProject.child.fatherPhotoUrl,
+            motherPhotoUrl: currentProject.child.motherPhotoUrl,
+            includeParentsInStory: currentProject.child.includeParentsInStory,
+            behaviorDescription: currentProject.child.behaviorDescription,
+            positiveAlternative: currentProject.child.positiveAlternative,
+            parentName: currentProject.child.parentName,
+            parentDedication: currentProject.child.parentDedication,
+            childHairStyle: currentProject.child.visualTraits.hairStyle,
+            childFaceFeatures: currentProject.child.visualTraits.faceFeatures,
+            childClothingStyle: currentProject.child.visualTraits.clothingStyle,
+            visualTraits: currentProject.child.visualTraits
+          })
+        });
+        clearTimeout(storyTimeout);
+
+        const storyData = await storyResponse.json();
+        if (!storyData.success) throw new Error(storyData.error || 'فشل تأليف القصة');
+
+        currentProject.pages = storyData.project.pages;
+        currentProject.child = storyData.project.child;
+
+        // 3. التوليد المتسلسل الآمن للصفحات الـ 12 واحدة تلو الأخرى عبر for...of مع await
+        const total = currentProject.pages.length;
+        let failedCount = 0;
+        let lastErrorMessage = '';
+        let pageIndex = 0;
+
+        for (const page of currentProject.pages) {
+          if (isGenerationAborted) {
+            console.log('[Generation] تم إيقاف عملية التوليد بواسطة المستخدم.');
+            break;
+          }
+
+          pageIndex++;
+          const pageNum = page.pageNumber;
+          const pct = Math.round(10 + (pageIndex / total) * 88);
+
+          pagesCounter.innerText = `الصفحة ${pageNum} من ${total}`;
+          progressBar.style.width = pct + '%';
+          progressPercent.innerText = pct + '%';
+
+          page.status = 'drawing';
+          renderPagesGrid();
+          updateStoryStatusBanner();
+
+          // معالجة الأخطاء: إعادة محاولة 3 مرات تلقائياً قبل إظهار الخطأ للمستخدم
+          let pageSuccess = false;
+          let pageLastError = '';
+          const maxPageAttempts = 3;
+
+          for (let attempt = 1; attempt <= maxPageAttempts; attempt++) {
+            if (isGenerationAborted) break;
+
+            const attemptText = attempt > 1 ? ` (محاولة تلقائية ${attempt}/${maxPageAttempts})` : '';
+            stageText.innerText = `جاري رسم المشهد لصفحة ${pageNum} من ${total}: "${page.title}"${attemptText}...`;
+
+            try {
+              const pageController = new AbortController();
+              const pageTimeout = setTimeout(() => pageController.abort(), 75000); // مهلة 75 ثانية كافية للتوليد
+
+              const imgResponse = await fetch('/api/generate-image', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                signal: pageController.signal,
+                body: JSON.stringify({
+                  pageNumber: pageNum,
+                  title: page.title,
+                  prompt: page.imagePromptEnglish,
+                  sceneTextArabic: page.textArabic,
+                  dialogueText: page.dialogueBubble ? page.dialogueBubble.text : null,
+                  artStyle: currentProject.child.artStyle,
+                  storySetting: currentProject.child.storySetting,
+                  customStorySetting: currentProject.child.customStorySetting,
+                  childName: currentProject.child.name,
+                  childAge: currentProject.child.age,
+                  childGender: currentProject.child.gender,
+                  favoriteHero: currentProject.child.favoriteHero,
+                  childPhoto: currentProject.child.photoUrl,
+                  fatherPhoto: currentProject.child.fatherPhotoUrl,
+                  motherPhoto: currentProject.child.motherPhotoUrl,
+                  visualTraits: currentProject.child.visualTraits,
+                  isColoring: page.type === 'coloring'
+                })
+              });
+              clearTimeout(pageTimeout);
+
+              if (!imgResponse.ok) {
+                throw new Error(`خطأ في استجابة الخادم (${imgResponse.status}): ${imgResponse.statusText}`);
+              }
+
+              const imgResult = await imgResponse.json();
+
+              if (imgResult.success && imgResult.imageUrl) {
+                // التحقق من أن الصورة المرجعة لوحة حقيقية وليست الصورة الشخصية الخام المرفوعة
+                if (imgResult.imageUrl !== currentProject.child.photoUrl &&
+                    imgResult.imageUrl !== currentProject.child.fatherPhotoUrl &&
+                    imgResult.imageUrl !== currentProject.child.motherPhotoUrl) {
+                  page.imageUrl = imgResult.imageUrl;
+                  page.status = 'completed';
+                  delete page.error;
+                  if (page.type === 'coloring') {
+                    page.coloringImageUrl = imgResult.imageUrl;
+                  }
+                  pageSuccess = true;
+                  break; // نجاح التوليد: الخروج من حلقة المحاولات
+                } else {
+                  throw new Error('استجاب الخادم بصورة مطابقة للصورة الشخصية الأصلية المرفوعة.');
+                }
+              } else {
+                throw new Error(imgResult.error || 'تعذر استلام لوحة صالحة من الـ API الخارجي.');
+              }
+            } catch (fetchErr) {
+              pageLastError = fetchErr.name === 'AbortError'
+                ? 'انتهت مهلة الانتظار (75 ثانية) أثناء توليد اللوحة على الخادم.'
+                : fetchErr.message;
+              console.warn(`[Auto-Retry] تعثر توليد صفحة ${pageNum} (محاولة ${attempt}/${maxPageAttempts}): ${pageLastError}`);
+
+              if (attempt < maxPageAttempts && !isGenerationAborted) {
+                stageText.innerText = `تعثرت المحاولة ${attempt} لصفحة ${pageNum}. إعادة المحاولة التلقائية بعد ثانيتين...`;
+                await new Promise(r => setTimeout(r, 2000 * attempt));
+              }
+            }
+          }
+
+          if (!pageSuccess && !isGenerationAborted) {
+            page.imageUrl = null;
+            page.status = 'error';
+            page.error = `تعذر التوليد بعد 3 محاولات تلقائية: ${pageLastError}`;
+            failedCount++;
+            lastErrorMessage = page.error;
+          }
+
+          renderPagesGrid();
+          updateStoryStatusBanner();
+
+          // فاصل زمني مهذب (Sequential Pacing) بين طلبات الصفحات لمنع حظر الطلبات (Rate Limit)
+          if (pageIndex < total && !isGenerationAborted) {
+            await new Promise(r => setTimeout(r, 1500));
+          }
+        }
+
+        // 4. حفظ الحالة النهائية في الـ Backend
+        await fetch('/api/save-project', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            child: currentProject.child,
+            pages: currentProject.pages
+          })
+        });
+
+        progressBar.style.width = '100%';
+        progressPercent.innerText = '100%';
+
+        if (failedCount > 0) {
+          icon.className = 'w-16 h-16 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4';
+          icon.innerText = '⚠️';
+          stageText.innerText = `تم تأليف القصة ولكن تعثر رسم ${failedCount} لوحة بسبب عدم استجابة خادم التوليد الخارجي.`;
+          errorBox.classList.remove('hidden');
+          errorBox.innerHTML = `
+            <div class="mb-1 font-black">سبب التعثر:</div>
+            <div class="text-[11px] leading-relaxed">${lastErrorMessage}</div>
+            <div class="mt-3 pt-2 border-t border-red-200 flex flex-col gap-2">
+              <button onclick="closeRealApiModal(); switchToCloudAndRetryAll();" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black text-xs py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 shadow transition-all active:scale-95">
+                <span>⚡</span> التبديل للتوليد السحابي الفوري فوراً (مضمون 100%)
+              </button>
+              <button onclick="closeRealApiModal(); switchTab('tab-flow');" class="w-full bg-purple-700 hover:bg-purple-800 text-white font-black text-xs py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 shadow transition-all active:scale-95">
+                <span>🎨</span> الانتقال لاستوديو قوقل فلو المجاني
+              </button>
+            </div>
+          `;
+          cancelBtn.classList.add('hidden');
+          doneBtn.classList.remove('hidden');
+        } else {
+          icon.className = 'w-16 h-16 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4';
+          icon.innerText = '🎉';
+          stageText.innerText = 'تم اكتمال توليد ورسم جميع لوحات المجلة بنجاح!';
+          setTimeout(() => {
+            closeRealApiModal();
+          }, 800);
+        }
+
+      } catch (err) {
+        icon.className = 'w-16 h-16 bg-red-100 text-red-600 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4';
+        icon.innerText = '❌';
+        stageText.innerText = 'حدث خطأ أثناء الاتصال بالـ API: ' + err.message;
+        errorBox.classList.remove('hidden');
+        errorBox.innerHTML = `<div>${err.message}</div>`;
+        cancelBtn.classList.add('hidden');
+        doneBtn.classList.remove('hidden');
+      }
+    }
+
+    // إعادة محاولة توليد صفحة فردية متعثرة مع 3 محاولات تلقائية وزر مباشر في الواجهة
+    async function retryPageGeneration(pageNum) {
+      const page = currentProject.pages.find(p => p.pageNumber === pageNum);
+      if (!page) return;
+
+      page.status = 'drawing';
+      delete page.error;
+      renderPagesGrid();
+      if (currentProject.currentPreviewIndex === pageNum - 1) {
+        renderCurrentPreviewPage();
+      }
+      updateStoryStatusBanner();
+
+      let pageSuccess = false;
+      let pageLastError = '';
+      const maxAttempts = 3;
+
+      for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+        try {
+          console.log(`[Manual Retry] جاري إعادة محاولة صفحة ${pageNum} (المحاولة ${attempt}/${maxAttempts})...`);
+          const controller = new AbortController();
+          const timeout = setTimeout(() => controller.abort(), 75000);
+
+          const imgResponse = await fetch('/api/generate-image', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            signal: controller.signal,
+            body: JSON.stringify({
+              pageNumber: pageNum,
+              title: page.title,
+              prompt: page.imagePromptEnglish,
+              sceneTextArabic: page.textArabic,
+              dialogueText: page.dialogueBubble ? page.dialogueBubble.text : null,
+              artStyle: currentProject.child.artStyle,
+              storySetting: currentProject.child.storySetting || 'crime-fighting',
+              customStorySetting: currentProject.child.customStorySetting || '',
+              childName: currentProject.child.name,
+              childAge: currentProject.child.age,
+              childGender: currentProject.child.gender,
+              favoriteHero: currentProject.child.favoriteHero,
+              childPhoto: currentProject.child.photoUrl,
+              fatherPhoto: currentProject.child.fatherPhotoUrl,
+              motherPhoto: currentProject.child.motherPhotoUrl,
+              visualTraits: currentProject.child.visualTraits || {
+                hairStyle: document.getElementById('childHairStyle')?.value,
+                faceFeatures: document.getElementById('childFaceFeatures')?.value,
+                clothingStyle: document.getElementById('childClothingStyle')?.value
+              },
+              isColoring: page.type === 'coloring'
+            })
+          });
+          clearTimeout(timeout);
+
+          if (!imgResponse.ok) {
+            throw new Error(`خطأ في استجابة الخادم (${imgResponse.status})`);
+          }
+
+          const imgResult = await imgResponse.json();
+
+          if (imgResult.success && imgResult.imageUrl) {
+            if (imgResult.imageUrl !== currentProject.child.photoUrl &&
+                imgResult.imageUrl !== currentProject.child.fatherPhotoUrl &&
+                imgResult.imageUrl !== currentProject.child.motherPhotoUrl) {
+              page.imageUrl = imgResult.imageUrl;
+              page.status = 'completed';
+              delete page.error;
+              if (page.type === 'coloring') {
+                page.coloringImageUrl = imgResult.imageUrl;
+              }
+              pageSuccess = true;
+              break;
+            } else {
+              throw new Error('استجاب الخادم بصورة مطابقة للأصلية.');
+            }
+          } else {
+            throw new Error(imgResult.error || 'تعذر توليد الصورة من الـ API.');
+          }
+        } catch (err) {
+          pageLastError = err.name === 'AbortError' ? 'انتهت مهلة الانتظار (75 ثانية)' : err.message;
+          console.warn(`[Manual Retry Fail] صفحة ${pageNum} محاولة ${attempt}/${maxAttempts}: ${pageLastError}`);
+          if (attempt < maxAttempts) {
+            await new Promise(r => setTimeout(r, 2000 * attempt));
+          }
+        }
+      }
+
+      if (!pageSuccess) {
+        page.imageUrl = null;
+        page.status = 'error';
+        page.error = `فشلت إعادة المحاولة بعد 3 مرات: ${pageLastError}`;
+      }
+
+      // حفظ المشروع المحدث وعرض الواجهة
+      await fetch('/api/save-project', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          child: currentProject.child,
+          pages: currentProject.pages
+        })
+      });
+
+      renderPagesGrid();
+      if (currentProject.currentPreviewIndex === pageNum - 1) {
+        renderCurrentPreviewPage();
+      }
+      updateStoryStatusBanner();
+    }
+
+    // إعادة محاولة كافة الصفحات المتعثرة بتسلسل مهذب وتفادي Rate Limit
+    async function retryAllFailedPages() {
+      const failedPages = currentProject.pages.filter(p => p.status === 'error' || (!p.imageUrl && p.type !== 'dedication'));
+      if (failedPages.length === 0) {
+        alert('جميع صفحات المجلة مكتملة ولديها لوحات جاهزة!');
+        return;
+      }
+
+      for (const page of failedPages) {
+        await retryPageGeneration(page.pageNumber);
+        await new Promise(r => setTimeout(r, 1500));
+      }
+    }
+
+    async function switchToCloudAndRetryAll() {
+      try {
+        await fetch('/api/config', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            endpointUrl: 'https://image.pollinations.ai/prompt',
+            customApiUrl: 'https://image.pollinations.ai/prompt',
+            apiType: 'cloud-ai',
+            timeoutMs: 60000,
+            maxRetries: 3
+          })
+        });
+        showFlowToast('⚡ تم التبديل الفوري للمحرك السحابي الذكي المجهز بملامح طفلك! جاري الرسم الآن...');
+        await retryAllFailedPages();
+      } catch (e) {
+        alert('حدث خطأ: ' + e.message);
+      }
+    }
+
+    // شريط إشعار حالة الصفحات بالأعلى
+    function updateStoryStatusBanner() {
+      const banner = document.getElementById('storyStatusBanner');
+      if (!banner) return;
+
+      const failedPages = currentProject.pages.filter(p => p.status === 'error' || (!p.imageUrl && p.type !== 'dedication'));
+      if (failedPages.length > 0) {
+        banner.className = 'mb-5 p-4 rounded-2xl border-2 border-red-500 bg-red-50 text-slate-900 shadow-[3px_3px_0px_#ef4444] flex flex-col md:flex-row justify-between items-center gap-3 font-changa';
+        banner.innerHTML = `
+          <div class="flex items-center gap-3 text-right w-full md:w-auto">
+            <span class="text-3xl">⚠️</span>
+            <div>
+              <div class="font-black text-sm text-red-900">تعثر رسم ${failedPages.length} لوحة (Google API يتطلب حساب فوترة، أو تعثر الخادم)</div>
+              <div class="text-xs text-red-700 font-cairo">يمكنك التبديل بنقرة واحدة للتوليد السحابي الفوري، أو استخدام استوديو قوقل فلو المجاني.</div>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-2 w-full md:w-auto justify-end">
+            <button onclick="switchToCloudAndRetryAll()" class="bg-blue-600 hover:bg-blue-700 text-white font-black text-xs px-3.5 py-2 rounded-xl shadow-md flex items-center gap-1.5 transition-transform active:scale-95">
+              <span>⚡</span> التوليد السحابي الفوري (مضمون 100%)
+            </button>
+            <button onclick="switchTab('tab-flow')" class="bg-purple-700 hover:bg-purple-800 text-white font-black text-xs px-3.5 py-2 rounded-xl shadow-md flex items-center gap-1.5 transition-transform active:scale-95">
+              <span>🎨</span> استوديو قوقل فلو المجاني
+            </button>
+            <button onclick="retryAllFailedPages()" class="bg-red-600 hover:bg-red-700 text-white font-black text-xs px-3 py-2 rounded-xl shadow-md flex items-center gap-1.5 transition-transform active:scale-95">
+              <span>🔄</span> إعادة المحاولة
+            </button>
+          </div>
+        `;
+        banner.classList.remove('hidden');
+      } else {
+        banner.classList.add('hidden');
+      }
+    }
+
+    // عرض بطاقات الصفحات الـ 12 بأسلوب لوحات الكوميكس (Comic Panels) مع دعم معالجة الأخطاء وإعادة المحاولة
+    function renderPagesGrid() {
+      const container = document.getElementById('pagesGrid');
+      container.innerHTML = '';
+
+      currentProject.pages.forEach(page => {
+        const card = document.createElement('div');
+        card.className = 'border-2 border-slate-900 rounded-2xl p-3.5 bg-white shadow-[3px_3px_0px_#0f172a] hover:shadow-[5px_5px_0px_#2563eb] transition-all flex flex-col justify-between overflow-hidden font-changa';
+        
+        const hasCartoonImage = page.imageUrl && 
+          page.imageUrl !== currentProject.child.photoUrl &&
+          page.imageUrl !== currentProject.child.fatherPhotoUrl &&
+          page.imageUrl !== currentProject.child.motherPhotoUrl;
+
+        const isDrawing = page.status === 'drawing';
+        const isError = page.status === 'error' || (!hasCartoonImage && page.error);
+
+        card.innerHTML = `
+          <div>
+            <div class="flex justify-between items-center mb-2">
+              <span class="text-[11px] font-black bg-slate-900 text-amber-300 px-2 py-0.5 rounded shadow-[1px_1px_0px_#2563eb]">صفحة ${page.pageNumber}</span>
+              <span class="text-xs font-bold text-slate-800 line-clamp-1">${page.title}</span>
+            </div>
+
+            <!-- لوحة الكوميكس أو حالة التحميل أو حالة الخطأ -->
+            <div class="h-48 w-full rounded-xl overflow-hidden border-2 border-slate-900 bg-slate-950 mb-2.5 relative shadow-[2px_2px_0px_#0f172a] flex items-center justify-center">
+              ${hasCartoonImage ? `
+                <img src="${page.imageUrl}" alt="${page.title}" class="w-full h-full object-cover block" />
+                ${page.dialogueBubble ? `
+                <div class="absolute bottom-1.5 right-1.5 left-1.5 bg-white/95 border border-slate-900 rounded-lg px-2 py-1 text-[10px] font-bold text-slate-900 line-clamp-1">
+                  💬 ${page.dialogueBubble.speaker}: "${page.dialogueBubble.text}"
+                </div>
+                ` : ''}
+              ` : isDrawing ? `
+                <div class="p-3 text-center text-amber-300">
+                  <div class="text-3xl animate-spin mb-1">🎨</div>
+                  <div class="text-[11px] font-black tracking-wide">جاري رسم المشهد الكرتوني...</div>
+                  <div class="text-[9px] text-slate-400 mt-0.5 font-cairo">بواسطة الذكاء الاصطناعي</div>
+                </div>
+              ` : isError ? `
+                <div class="p-3 text-center text-red-300 flex flex-col items-center justify-center h-full w-full bg-slate-950">
+                  <div class="text-3xl mb-1 text-red-400">⚠️</div>
+                  <div class="text-xs font-black text-red-200">تعذر رسم المشهد الكرتوني</div>
+                  <div class="text-[10px] text-red-300 mt-1 line-clamp-2 px-2 font-cairo leading-relaxed" title="${page.error || 'فشل الاتصال بخادم التوليد الخارجي'}">
+                    ${page.error || 'فشل الاتصال بالـ API الخارجي'}
+                  </div>
+                  <button onclick="retryPageGeneration(${page.pageNumber})" class="mt-2.5 bg-red-600 hover:bg-red-700 text-white font-black text-xs px-3 py-1.5 rounded-xl border border-red-400 shadow-[1px_1px_0px_#000] flex items-center gap-1 transition-transform active:scale-95">
+                    <span>🔄</span> إعادة المحاولة الآن
+                  </button>
+                </div>
+              ` : `
+                <div class="p-3 text-center text-amber-300">
+                  <div class="text-2xl mb-1">🎨</div>
+                  <div class="text-[11px] font-black tracking-wide">في انتظار بدء التوليد</div>
+                  <button onclick="retryPageGeneration(${page.pageNumber})" class="mt-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] px-2.5 py-1 rounded-lg">
+                    بدء رسم المشهد
+                  </button>
+                </div>
+              `}
+            </div>
+
+            <!-- النص السردي بأسلوب الكوميكس (4-6 أسطر بدون تشكيل) -->
+            <div class="bg-amber-50/70 border border-slate-300 rounded-lg p-2">
+              <p class="font-cairo font-bold text-xs text-slate-800 leading-relaxed text-justify line-clamp-3 m-0">
+                ${page.textArabic}
+              </p>
+            </div>
+
+            <!-- أزرار Google Flow والاستيراد المباشر للصور -->
+            <div class="flex items-center gap-1.5 mt-2 pt-2 border-t border-dashed border-slate-200">
+              <button type="button" onclick="copyFlowPrompt(${page.pageNumber})" class="flex-1 bg-purple-50 hover:bg-purple-100 text-purple-900 border border-purple-200 rounded-lg py-1.5 px-2 text-[10px] font-bold flex items-center justify-center gap-1 transition-all" title="نسخ أمر المشهد باللغة الإنجليزية للوح قوقل فلو">
+                <span>📋</span> أمر Flow
+              </button>
+              <button type="button" onclick="pasteImageFromClipboard(${page.pageNumber})" class="flex-1 bg-indigo-50 hover:bg-indigo-100 text-indigo-900 border border-indigo-200 rounded-lg py-1.5 px-2 text-[10px] font-bold flex items-center justify-center gap-1 transition-all" title="لصق الصورة المنسوخة من قوقل فلو فوراً">
+                <span>📋</span> لصق الصورة
+              </button>
+              <label class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 rounded-lg py-1.5 px-2 text-[10px] font-bold flex items-center justify-center gap-1 cursor-pointer transition-all" title="رفع صورة المشهد مباشرة من جهازك">
+                <span>📷</span> رفع
+                <input type="file" accept="image/*" class="hidden" onchange="uploadSinglePageImage(event, ${page.pageNumber})" />
+              </label>
+            </div>
+          </div>
+
+          <div class="mt-3 pt-2 border-t border-slate-200 flex justify-between items-center text-xs">
+            <span class="text-[11px] font-extrabold ${hasCartoonImage ? 'text-emerald-700 bg-emerald-50 border-emerald-200' : isError ? 'text-red-700 bg-red-50 border-red-300' : isDrawing ? 'text-blue-700 bg-blue-50 border-blue-300' : 'text-amber-700 bg-amber-50 border-amber-300'} px-2 py-0.5 rounded border">
+              ${hasCartoonImage ? 'لوحة كرتونية جاهزة ✅' : isError ? 'تعثر التوليد ❌' : isDrawing ? 'جاري الرسم ⏳' : 'في الانتظار ⏳'}
+            </span>
+            <div class="flex items-center gap-2">
+              ${isError ? `
+                <button onclick="retryPageGeneration(${page.pageNumber})" class="text-red-600 font-bold hover:underline text-xs flex items-center gap-1">
+                  <span>🔄</span> إعادة المحاولة
+                </button>
+              ` : ''}
+              <button onclick="previewSpecificPage(${page.pageNumber})" class="text-blue-700 font-extrabold hover:underline flex items-center gap-1">
+                <span>معاينة الكوميكس</span> ⟵
+              </button>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+
+      updateStoryStatusBanner();
+      if (typeof renderFlowStudio === 'function') {
+        renderFlowStudio();
+      }
+    }
+
+    function previewSpecificPage(pageNum) {
+      currentProject.currentPreviewIndex = pageNum - 1;
+      switchTab('tab-preview');
+    }
+
+    function prevPreviewPage() {
+      if (currentProject.currentPreviewIndex > 0) {
+        currentProject.currentPreviewIndex--;
+        renderCurrentPreviewPage();
+      }
+    }
+
+    function nextPreviewPage() {
+      if (currentProject.currentPreviewIndex < currentProject.pages.length - 1) {
+        currentProject.currentPreviewIndex++;
+        renderCurrentPreviewPage();
+      }
+    }
+
+    // عرض الصفحة الحالية في العارض التفاعلي (الصورة بالأعلى متمددة 52% والنص بالأسفل)
+    function renderCurrentPreviewPage() {
+      if (currentProject.pages.length === 0) return;
+
+      const page = currentProject.pages[currentProject.currentPreviewIndex];
+      document.getElementById('previewPageIndicator').innerText = `صفحة ${page.pageNumber} من ${currentProject.pages.length}`;
+
+      const container = document.getElementById('magazinePageViewContainer');
+
+      const hasCartoonImg = page.imageUrl && 
+        page.imageUrl !== currentProject.child.photoUrl &&
+        page.imageUrl !== currentProject.child.fatherPhotoUrl &&
+        page.imageUrl !== currentProject.child.motherPhotoUrl;
+
+      const isError = page.status === 'error' || (!hasCartoonImg && page.error);
+      const isDrawing = page.status === 'drawing';
+
+      if (page.type === 'cover') {
+        container.innerHTML = `
+          <div class="h-full bg-gradient-to-br from-blue-950 via-blue-900 to-indigo-950 text-white p-5 flex flex-col justify-between font-changa">
+            <div class="flex justify-between items-center border-b border-white/20 pb-2">
+              <span class="bg-red-500 text-white font-bold text-xs px-2.5 py-0.5 rounded-full shadow-[1px_1px_0px_#000]">إصدار بطولة حصري</span>
+              <span class="text-xs text-amber-300 font-bold">مكتبة الشعلة للقصص المصورة</span>
+            </div>
+            <div class="text-center my-2">
+              <h3 class="text-2xl font-black text-amber-300 tracking-wide">مغامرات البطل ${currentProject.child.name}</h3>
+              <h4 class="text-sm font-bold text-white mt-0.5">مع ${currentProject.child.favoriteHero}</h4>
+              <span class="inline-block mt-1 bg-black/40 border border-amber-300/40 text-amber-200 text-xs px-3 py-0.5 rounded-full">
+                ${page.title}
+              </span>
+            </div>
+            <div class="border-2 border-amber-400 rounded-xl h-64 overflow-hidden bg-slate-950 flex items-center justify-center relative shadow-[3px_3px_0px_#000]">
+              ${hasCartoonImg ? `
+                <img src="${page.imageUrl}" class="w-full h-full object-cover block" />
+              ` : isError ? `
+                <div class="p-4 text-center text-red-300 flex flex-col items-center justify-center h-full w-full">
+                  <div class="text-3xl mb-1 text-red-400">⚠️</div>
+                  <div class="font-extrabold text-sm text-red-200">تعذر رسم غلاف المجلة</div>
+                  <div class="text-[11px] text-red-300 mt-1 max-w-xs font-cairo leading-relaxed" title="${page.error}">${page.error || 'فشل الاتصال بالـ API الخارجي'}</div>
+                  <div class="mt-3 flex gap-2">
+                    <button onclick="retryPageGeneration(${page.pageNumber})" class="bg-red-600 hover:bg-red-700 text-white font-black text-xs px-3.5 py-1.5 rounded-xl border border-red-400 shadow-[1px_1px_0px_#000] flex items-center gap-1">
+                      <span>🔄</span> إعادة المحاولة الآن
+                    </button>
+                    <button onclick="openConfigModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs px-2.5 py-1.5 rounded-xl border border-slate-600">
+                      ⚙️ الإعدادات
+                    </button>
+                  </div>
+                </div>
+              ` : isDrawing ? `
+                <div class="p-4 text-center text-amber-300">
+                  <div class="text-3xl animate-spin mb-2">🎨</div>
+                  <div class="font-extrabold text-sm">جاري رسم غلاف المجلة الكرتوني...</div>
+                  <div class="text-[11px] text-slate-400 mt-1 font-cairo">في انتظار استلام اللوحة من الـ API الخارجي</div>
+                </div>
+              ` : `
+                <div class="p-4 text-center text-amber-300">
+                  <div class="text-3xl mb-1">🎨</div>
+                  <div class="font-extrabold text-xs">في انتظار بدء الرسم</div>
+                  <button onclick="retryPageGeneration(${page.pageNumber})" class="mt-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs px-3 py-1.5 rounded-lg">
+                    بدء رسم الغلاف
+                  </button>
+                </div>
+              `}
+            </div>
+            <div class="bg-black/40 rounded-lg p-2 text-center text-xs text-amber-200 font-bold mt-1">
+              ⭐ قصة مخصصة لترسيخ: ${currentProject.child.positiveAlternative}
+            </div>
+          </div>
+        `;
+      } else if (page.type === 'dedication') {
+        container.innerHTML = `
+          <div class="h-full bg-amber-50 p-6 flex flex-col justify-between text-slate-800 font-changa">
+            <div class="text-center border-b border-dashed border-amber-300 pb-3">
+              <div class="text-3xl">💌</div>
+              <h3 class="text-lg font-bold text-amber-900 mt-1">رسالة حب وفخر من الوالدين</h3>
+              <p class="text-xs text-amber-700">إلى بطلنا الغالي: <strong>${currentProject.child.name}</strong></p>
+            </div>
+            <div class="bg-white rounded-xl p-5 shadow-sm border border-amber-200 text-sm leading-relaxed text-slate-700 text-center">
+              <div class="flex justify-center gap-2 mb-3 text-2xl">
+                <span>⭐</span><span>🦸‍♂️</span><span>💖</span>
+              </div>
+              <div class="mb-4 text-justify leading-relaxed font-cairo">"${page.textArabic}"</div>
+              <div class="font-bold text-xs text-amber-900 font-changa">
+                بكل فخر ومحبة،<br>
+                <span>${currentProject.child.parentName} ❤️</span>
+              </div>
+            </div>
+            <div class="text-center text-xs text-slate-400">صفحة 2 • مجلة الأبطال التربوية المخصصة</div>
+          </div>
+        `;
+      } else if (page.type === 'story') {
+        container.innerHTML = `
+          <div class="h-full bg-white p-3.5 sm:p-4 flex flex-col justify-between font-changa">
+            <!-- الشريط العلوي للكوميكس -->
+            <div class="flex justify-between items-center mb-1.5">
+              <span class="bg-slate-900 text-amber-300 font-extrabold text-xs px-3 py-0.5 rounded-lg shadow-[2px_2px_0px_#2563eb]">
+                💥 المشهد ${page.pageNumber - 2}: ${page.title}
+              </span>
+              <span class="text-[11px] font-extrabold text-slate-600 bg-slate-100 px-2 py-0.5 rounded border border-slate-300">
+                صفحة ${page.pageNumber}
+              </span>
+            </div>
+
+            <!-- لوحة الكوميكس الكبرى (Comic Panel 70% Bleed) أو حالة جاري الرسم -->
+            <div class="h-[68%] min-h-[300px] border-[3.5px] border-slate-900 rounded-2xl overflow-hidden bg-slate-950 shadow-[4px_4px_0px_#0f172a] relative my-1 flex items-center justify-center">
+              ${hasCartoonImg ? `
+                <img src="${page.imageUrl}" class="w-full h-full object-cover block" />
+                ${page.dialogueBubble ? `
+                <div class="absolute bottom-2.5 right-2.5 left-2.5 bg-white/95 border-2 border-slate-900 rounded-xl px-3 py-1.5 shadow-[2px_2px_0px_#0f172a] flex items-center gap-2">
+                  <span class="bg-red-500 text-white text-[10px] font-black px-1.5 py-0.5 rounded">💬 ${page.dialogueBubble.speaker}</span>
+                  <span class="text-xs font-bold text-slate-900 leading-snug">"${page.dialogueBubble.text}"</span>
+                </div>
+                ` : ''}
+              ` : isError ? `
+                <div class="p-5 text-center text-red-300 flex flex-col items-center justify-center h-full w-full">
+                  <div class="text-4xl mb-1 text-red-400">⚠️</div>
+                  <div class="text-sm font-black tracking-wide text-red-200">تعذر رسم المشهد الكرتوني</div>
+                  <div class="text-[11px] text-red-300 mt-1 max-w-xs font-cairo leading-relaxed" title="${page.error}">${page.error || 'فشل الاتصال بالـ API الخارجي'}</div>
+                  <div class="mt-4 flex gap-2">
+                    <button onclick="retryPageGeneration(${page.pageNumber})" class="bg-red-600 hover:bg-red-700 text-white font-black text-xs px-4 py-2 rounded-xl border border-red-400 shadow-[2px_2px_0px_#000] flex items-center gap-1.5 transition-transform active:scale-95">
+                      <span>🔄</span> إعادة محاولة رسم هذا المشهد
+                    </button>
+                    <button onclick="openConfigModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs px-3 py-2 rounded-xl border border-slate-600">
+                      ⚙️ الإعدادات
+                    </button>
+                  </div>
+                </div>
+              ` : isDrawing ? `
+                <div class="p-6 text-center text-amber-300">
+                  <div class="text-4xl animate-spin mb-2">🎨</div>
+                  <div class="text-sm font-black tracking-wide">جاري رسم المشهد الكرتوني...</div>
+                  <div class="text-[11px] text-slate-400 mt-1 font-cairo">مطابقة ملامح البطل وأحداث المشهد بواسطة الذكاء الاصطناعي</div>
+                </div>
+              ` : `
+                <div class="p-6 text-center text-amber-300">
+                  <div class="text-3xl mb-1">🎨</div>
+                  <div class="text-xs font-black tracking-wide">في انتظار بدء التوليد</div>
+                  <button onclick="retryPageGeneration(${page.pageNumber})" class="mt-3 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs px-3 py-1.5 rounded-lg">
+                    بدء رسم المشهد
+                  </button>
+                </div>
+              `}
+            </div>
+
+            <!-- صندوق النص السردي بأسلوب الكوميكس (Comic Caption Box) -->
+            <div class="bg-[#fffdf5] border-[2.5px] border-slate-900 rounded-xl p-2.5 shadow-[3px_3px_0px_#f59e0b] mt-1">
+              <p class="font-cairo font-bold text-xs text-slate-800 leading-relaxed text-justify m-0">
+                ${page.textArabic}
+              </p>
+            </div>
+          </div>
+        `;
+      } else if (page.type === 'coloring') {
+        const hasColoringImg = (page.coloringImageUrl || page.imageUrl) &&
+          page.coloringImageUrl !== currentProject.child.photoUrl &&
+          page.imageUrl !== currentProject.child.photoUrl;
+
+        container.innerHTML = `
+          <div class="h-full bg-white p-5 flex flex-col justify-between font-changa">
+            <div class="flex justify-between items-center border-b border-dashed pb-2">
+              <span class="font-bold text-xs text-slate-700 flex items-center gap-1.5">🖍️ ${page.title}</span>
+              <span class="text-xs text-slate-500 font-bold">صفحة ${page.pageNumber}</span>
+            </div>
+            <div class="border-2 border-dashed border-slate-300 rounded-xl h-72 overflow-hidden flex items-center justify-center p-2 bg-white">
+              ${hasColoringImg ? `
+                <img src="${page.coloringImageUrl || page.imageUrl}" class="w-full h-full object-contain block" />
+              ` : isError ? `
+                <div class="text-center p-4 text-red-500">
+                  <div class="text-3xl mb-1">⚠️</div>
+                  <div class="text-xs font-black text-red-700">تعذر تجهيز صفحة التلوين</div>
+                  <div class="text-[10px] text-red-500 mt-1 max-w-xs mx-auto font-cairo">${page.error || 'فشل الاتصال بالـ API الخارجي'}</div>
+                  <button onclick="retryPageGeneration(${page.pageNumber})" class="mt-3 bg-red-600 hover:bg-red-700 text-white font-bold text-xs px-3 py-1.5 rounded-lg">
+                    <span>🔄</span> إعادة المحاولة
+                  </button>
+                </div>
+              ` : `
+                <div class="text-center p-4 text-slate-500">
+                  <div class="text-3xl mb-1">🖍️</div>
+                  <div class="text-xs font-bold">جاري تجهيز صفحة التلوين...</div>
+                </div>
+              `}
+            </div>
+            <div class="text-center text-xs text-slate-500 bg-slate-50 p-2 rounded-lg font-bold">
+              🎨 أطلق لخيالك العنان واستخدم ألوانك المفضلة!
+            </div>
+          </div>
+        `;
+      } else if (page.type === 'certificate') {
+        container.innerHTML = `
+          <div class="h-full bg-amber-50 p-5 flex flex-col justify-between">
+            <div class="h-full border-4 border-double border-amber-600 rounded-xl p-4 bg-white flex flex-col justify-between text-center shadow-md">
+              <div>
+                <div class="text-2xl">🏆 ⭐ 🏆</div>
+                <h3 class="text-base font-black text-amber-900 mt-1">شهادة بطل السلوك الإيجابي</h3>
+                <div class="w-12 h-1 bg-amber-500 mx-auto mt-1"></div>
+              </div>
+              <div class="my-3">
+                <p class="text-xs text-slate-500">تمنح بكل فخر للبطل الشجاع:</p>
+                <div class="text-2xl font-black text-blue-900 my-1 underline decoration-amber-400">
+                  ${currentProject.child.name}
+                </div>
+                <p class="text-xs text-slate-700 leading-relaxed max-w-xs mx-auto">
+                  تقديرا لشجاعته وتميزه ونجاحه في التحلي بـ <strong>${currentProject.child.positiveAlternative}</strong> ليصبح قدوة حسنة.
+                </p>
+              </div>
+              <div class="flex justify-around items-end pt-3 border-t border-amber-200 text-xs">
+                <div>
+                  <div class="font-bold text-amber-900">توقيع ولي الأمر</div>
+                  <div class="mt-1 text-slate-600">${currentProject.child.parentName}</div>
+                </div>
+                <div>
+                  <div class="font-bold text-amber-900">ختم المكتبة</div>
+                  <div class="mt-1 text-slate-600">مكتبة الشعلة</div>
+                </div>
+              </div>
+              <div class="text-[10px] text-slate-400">صفحة 12 • شهادة الأبطال</div>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    function openBookletPrintDirect() {
+      window.open('/api/print-booklet', '_blank');
+    }
+
+    function openReadingPrintDirect() {
+      window.open('/api/print-reading', '_blank');
+    }
+
+    function copyFlowPrompt(pageNum) {
+      const page = currentProject.pages.find(p => p.pageNumber === pageNum);
+      if (!page) return;
+      const prompt = page.flowPromptEnglish || page.imagePromptEnglish;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(prompt);
+      } else {
+        const ta = document.createElement('textarea');
+        ta.value = prompt;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      }
+      showFlowToast(`📋 تم نسخ أمر Google Flow لصفحة ${pageNum} بنجاح! يمكنك الآن لصقه مباشرة في موقع Google Flow.`);
+    }
+
+    async function uploadSinglePageImage(event, pageNum) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = async function(e) {
+        const dataUrl = e.target.result;
+        try {
+          showFlowToast(`جاري حفظ وربط صورة صفحة ${pageNum}...`);
+          const res = await fetch('/api/upload-page-image', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ pageNumber: pageNum, imageData: dataUrl })
+          });
+          const data = await res.json();
+          if (data.success) {
+            const page = currentProject.pages.find(p => p.pageNumber === pageNum);
+            if (page) {
+              page.imageUrl = data.imageUrl;
+              page.status = 'completed';
+              delete page.error;
+              if (page.type === 'coloring') page.coloringImageUrl = data.imageUrl;
+            }
+            renderPagesGrid();
+            renderCurrentPreviewPage();
+            showFlowToast(`🎉 تم تحديث صورة صفحة ${pageNum} بنجاح!`);
+          } else {
+            alert('تعذر حفظ الصورة: ' + (data.error || 'خطأ غير معروف'));
+          }
+        } catch (err) {
+          alert('خطأ في الرفع: ' + err.message);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // تهيئة الصفحة فورا
+    window.onload = async function() {
+      try {
+        // 1. فحص وجود مشروع محفوظ بالصور أولاً
+        const projRes = await fetch('/api/project');
+        const projData = await projRes.json();
+        if (projData.success && projData.pages && projData.pages.length === 12) {
+          currentProject.child = projData.child;
+          currentProject.pages = projData.pages;
+          if (currentProject.child.storySetting) {
+            const radio = document.querySelector(`input[name="storySetting"][value="${currentProject.child.storySetting}"]`);
+            if (radio) {
+              radio.checked = true;
+              handleStorySettingChange(currentProject.child.storySetting);
+            }
+          }
+          if (currentProject.child.customStorySetting) {
+            const customInput = document.getElementById('customStorySetting');
+            if (customInput) customInput.value = currentProject.child.customStorySetting;
+          }
+          renderPagesGrid();
+          renderCurrentPreviewPage();
+          console.log('[Init] تم تحميل المشروع المحفوظ بنجاح مع الصور.');
+          return;
+        }
+
+        // 2. إذا لم يكن هناك مشروع مسبق، يتم توليد نصوص جديدة
+        const res = await fetch('/api/generate-story-end-to-end', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            childName: 'عمر',
+            childAge: 7,
+            childGender: 'boy',
+            favoriteHero: 'سبايدرمان',
+            artStyle: '3d-pixar',
+            includeParentsInStory: false
+          })
+        });
+        const data = await res.json();
+        if (data.success) {
+          currentProject.child = data.project.child;
+          currentProject.pages = data.project.pages;
+          renderPagesGrid();
+          renderCurrentPreviewPage();
+        }
+      } catch (e) {
+        console.error('Init error:', e);
+      }
+    };
+  </script>
+</body>
+</html>

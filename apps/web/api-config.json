@@ -1,0 +1,9 @@
+{
+  "endpointUrl": "https://flow.google.com",
+  "apiType": "google-flow",
+  "customApiUrl": "",
+  "apiKey": "AIzaSyA0PnJr_QPhUvOE0tsrAtKW5GLMfmAeEAw",
+  "customWorkflowJson": "",
+  "timeoutMs": 60000,
+  "maxRetries": 3
+}

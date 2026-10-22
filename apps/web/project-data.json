@@ -1,0 +1,168 @@
+{
+  "child": {
+    "name": "عمر",
+    "age": 7,
+    "gender": "boy",
+    "favoriteHero": "سبايدرمان (Spider-Man)",
+    "artStyle": "3d-pixar",
+    "storySetting": "fantasy-magic",
+    "customStorySetting": "",
+    "photoUrl": "/sample-child.jpg",
+    "fatherPhotoUrl": null,
+    "motherPhotoUrl": null,
+    "visualTraits": {
+      "hairStyle": "شعر قصير كيرلي مموج داكن من الأعلى مع تدريج ناعم على الجانبين (Curly Fade)",
+      "faceFeatures": "عيون لوزية داكنة واسعة، حواجب مقوسة، وجه بيضاوي ناعم، بشرة حنطية عربية، وابتسامة هادئة واثقة",
+      "clothingStyle": "قميص أسود أنيق مع كنزة صوفية مخططة أفقياً بالأبيض والأسود معقودة فوق الكتفين وبنطال جينز أزرق"
+    },
+    "includeParentsInStory": false,
+    "behaviorDescription": "يقضي وقتا طويلا في اللعب ويهمل أداء واجباته المدرسية وتجهيز حقيبته.",
+    "positiveAlternative": "العلم والاجتهاد سر قوة الأبطال وتنظيم الوقت",
+    "parentName": "أبو عمر وأم عمر",
+    "parentDedication": "يا بطلنا الغالي عمر نحن فخورون بذكائك دائما وواثقون أنك ستكون بطلا متميزا."
+  },
+  "pages": [
+    {
+      "pageNumber": 1,
+      "type": "cover",
+      "title": "مغامرات الفارس الشجاع: البطل عمر مع سبايدرمان (Spider-Man)",
+      "textArabic": "إصدار خاص وبطولة حصرية لـ البطل عمر في مملكة الفانتازيا وحماية جوهرة النور",
+      "imageUrl": "/generated-images/page-1-cloud-1792700009650.png",
+      "imagePromptEnglish": "Epic fantasy adventure comic book cover. Front and center: an authentic 7-year-old Arab boy named Omar, authentic child proportions, haircut: short neat dark textured crop haircut with clean clipper fade on sides and temples, high forehead, face & skin: large expressive dark brown almond eyes, arched neat dark eyebrows, slender oval face with gentle child cheeks, smooth warm light-olive skin tone, sweet gentle confident smile, wearing a customized modern superhero adventurer suit with a glowing chest emblem and fluttering heroic cape, identical facial structure, eyes, eyebrows, nose, lips and haircut strictly matching character reference photo with authentic child identity preserved in a royal adventurer tunic and cape standing proudly beside Spider-Man in gleaming knight armor before a majestic enchanted castle with towering crystal spires under an aurora borealis sky, cinematic fantasy lighting, 8k render.",
+      "flowPromptEnglish": "Epic fantasy adventure comic book cover. Front and center: an authentic 7-year-old Arab boy named Omar, authentic child proportions, haircut: short neat dark textured crop haircut with clean clipper fade on sides and temples, high forehead, face & skin: large expressive dark brown almond eyes, arched neat dark eyebrows, slender oval face with gentle child cheeks, smooth warm light-olive skin tone, sweet gentle confident smile, wearing a customized modern superhero adventurer suit with a glowing chest emblem and fluttering heroic cape, identical facial structure, eyes, eyebrows, nose, lips and haircut strictly matching character reference photo with authentic child identity preserved in a royal adventurer tunic and cape standing proudly beside Spider-Man in gleaming knight armor before a majestic enchanted castle with towering crystal spires under an aurora borealis sky, cinematic fantasy lighting, 8k render.",
+      "status": "completed"
+    },
+    {
+      "pageNumber": 2,
+      "type": "dedication",
+      "title": "رسالة شرف من قلعة الملوك",
+      "textArabic": "يا بطلنا الغالي عمر نحن فخورون بذكائك دائما وواثقون أنك ستكون بطلا متميزا.",
+      "imageUrl": null,
+      "imagePromptEnglish": "Heartwarming royal family library portrait. an authentic 7-year-old Arab boy named Omar, authentic child proportions, haircut: short neat dark textured crop haircut with clean clipper fade on sides and temples, high forehead, face & skin: large expressive dark brown almond eyes, arched neat dark eyebrows, slender oval face with gentle child cheeks, smooth warm light-olive skin tone, sweet gentle confident smile, wearing a customized modern superhero adventurer suit with a glowing chest emblem and fluttering heroic cape, identical facial structure, eyes, eyebrows, nose, lips and haircut strictly matching character reference photo with authentic child identity preserved sitting cozily before an ornate stone fireplace in a grand castle room, reading an illuminated golden scroll between smiling proud parents, warm glowing candlelight.",
+      "flowPromptEnglish": "Heartwarming royal family library portrait. an authentic 7-year-old Arab boy named Omar, authentic child proportions, haircut: short neat dark textured crop haircut with clean clipper fade on sides and temples, high forehead, face & skin: large expressive dark brown almond eyes, arched neat dark eyebrows, slender oval face with gentle child cheeks, smooth warm light-olive skin tone, sweet gentle confident smile, wearing a customized modern superhero adventurer suit with a glowing chest emblem and fluttering heroic cape, identical facial structure, eyes, eyebrows, nose, lips and haircut strictly matching character reference photo with authentic child identity preserved sitting cozily before an ornate stone fireplace in a grand castle room, reading an illuminated golden scroll between smiling proud parents, warm glowing candlelight.",
+      "status": "error",
+      "error": "تعذر توليد لوحة صفحة 2 بعد 3 محاولات تلقائية. التفاصيل: fetch failed"
+    },
+    {
+      "pageNumber": 3,
+      "type": "story",
+      "title": "جوهرة النور وأمانة الفرسان",
+      "textArabic": "في قلعة الفرسان المهيبة كان بطلنا عمر يستمتع بجمال الأبراج الساحرة والحدائق المعلقة. كان مؤتمنا على رعاية جوهرة النور التي تحمي المملكة، لكنه كان يواجه تحديا في يقضي وقتا طويلا في اللعب ويهمل أداء واجباته المدرسية وتجهيز حقيبته.. وفجأة بدأت أضواء الجوهرة تخفت على برجها معلنة اقتراب ظلال المتاهة الغامضة! شعر عمر بالمسؤولية الكبيرة وأدرك أن الأمانة والشجاعة تتطلبان منه ترك التكاسل فورا والنهوض للدفاع عن المملكة.",
+      "dialogueBubble": {
+        "speaker": "عمر",
+        "text": "أمانة القلعة مسؤوليتي! سأرتب مهامي وأحمي جوهرة النور بكل إخلاص وشجاعة!"
+      },
+      "imageUrl": null,
+      "imagePromptEnglish": "Enchanted castle tower chamber: an authentic 7-year-old Arab boy named Omar, authentic child proportions, haircut: short neat dark textured crop haircut with clean clipper fade on sides and temples, high forehead, face & skin: large expressive dark brown almond eyes, arched neat dark eyebrows, slender oval face with gentle child cheeks, smooth warm light-olive skin tone, sweet gentle confident smile, wearing a customized modern superhero adventurer suit with a glowing chest emblem and fluttering heroic cape, identical facial structure, eyes, eyebrows, nose, lips and haircut strictly matching character reference photo with authentic child identity preserved in adventurer tunic stands near an ancient stained-glass window beside an ornate pedestal holding the Kingdom's glowing Light Gem, preparing for a noble quest with curiosity and courage.",
+      "flowPromptEnglish": "Enchanted castle tower chamber: an authentic 7-year-old Arab boy named Omar, authentic child proportions, haircut: short neat dark textured crop haircut with clean clipper fade on sides and temples, high forehead, face & skin: large expressive dark brown almond eyes, arched neat dark eyebrows, slender oval face with gentle child cheeks, smooth warm light-olive skin tone, sweet gentle confident smile, wearing a customized modern superhero adventurer suit with a glowing chest emblem and fluttering heroic cape, identical facial structure, eyes, eyebrows, nose, lips and haircut strictly matching character reference photo with authentic child identity preserved in adventurer tunic stands near an ancient stained-glass window beside an ornate pedestal holding the Kingdom's glowing Light Gem, preparing for a noble quest with curiosity and courage.",
+      "status": "error",
+      "error": "تعذر توليد لوحة صفحة 3 بعد 3 محاولات تلقائية. التفاصيل: fetch failed"
+    },
+    {
+      "pageNumber": 4,
+      "type": "story",
+      "title": "متاهة الغابة المسحورة واختبار الصبر",
+      "textArabic": "خرج عمر باتجاه الغابة المسحورة للبحث عن مفتاح تجديد النور، فوجد نفسه أمام متاهة من الأشواك المضيئة والأبواب الحجرية المغلقة بألغاز قديمة. شعر بطلنا الصغير بصعوبة التحدي، لكنه تذكر أن التراجع لن ينقذ القلعة. وقف بثبات على مدخل المتاهة يتأمل الرموز بحكمة وصبر، متذكرا أن الشجاعة الحقيقية تبدأ من الهدوء وترتيب الأفكار بحكمة قبل اتخاذ أي خطوة.",
+      "dialogueBubble": {
+        "speaker": "عمر",
+        "text": "الألغاز لا تُحل بالتسرع، بل بالصبر والتفكير المنظم! سأجد المفتاح الصائب!"
+      },
+      "imageUrl": null,
+      "imagePromptEnglish": "Mystical maze obstacle in the ancient forest: an authentic 7-year-old Arab boy named Omar, authentic child proportions, haircut: short neat dark textured crop haircut with clean clipper fade on sides and temples, high forehead, face & skin: large expressive dark brown almond eyes, arched neat dark eyebrows, slender oval face with gentle child cheeks, smooth warm light-olive skin tone, sweet gentle confident smile, wearing a customized modern superhero adventurer suit with a glowing chest emblem and fluttering heroic cape, identical facial structure, eyes, eyebrows, nose, lips and haircut strictly matching character reference photo with authentic child identity preserved stands before a gateway of glowing enchanted brambles and riddle stones, analyzing the magical pattern with patient focus and calm wisdom as mystical mist swirls.",
+      "flowPromptEnglish": "Mystical maze obstacle in the ancient forest: an authentic 7-year-old Arab boy named Omar, authentic child proportions, haircut: short neat dark textured crop haircut with clean clipper fade on sides and temples, high forehead, face & skin: large expressive dark brown almond eyes, arched neat dark eyebrows, slender oval face with gentle child cheeks, smooth warm light-olive skin tone, sweet gentle confident smile, wearing a customized modern superhero adventurer suit with a glowing chest emblem and fluttering heroic cape, identical facial structure, eyes, eyebrows, nose, lips and haircut strictly matching character reference photo with authentic child identity preserved stands before a gateway of glowing enchanted brambles and riddle stones, analyzing the magical pattern with patient focus and calm wisdom as mystical mist swirls.",
+      "status": "error",
+      "error": "تعذر توليد لوحة صفحة 4 بعد 3 محاولات تلقائية. التفاصيل: fetch failed"
+    },
+    {
+      "pageNumber": 5,
+      "type": "story",
+      "title": "ظهور الفارس الخارق وسر الشجاعة الحقيقية",
+      "textArabic": "أضاءت الغابة ببريق ذهبي مبهر وانفتحت بوابة ضوئية سحرية خرج منها سبايدرمان (Spider-Man) بدرعه الفضي البراق وابتسامته الدافئة! ربت البطل على كتف عمر وقال له: \"أيها الفارس الصغير، القوة الحقيقية لا تكمن في السيوف الخارقة، بل في العلم والاجتهاد سر قوة الأبطال وتنظيم الوقت!\" أحس عمر بثقة كبيرة تسري في قلبه، وعلم أن وجود بطله المفضل بجانبه هو بداية عهد جديد من الشجاعة والإنجاز.",
+      "dialogueBubble": {
+        "speaker": "سبايدرمان (Spider-Man)",
+        "text": "مرحبا يا عمر! سر فرسان المملكة الحقيقي يكمن في العلم والاجتهاد سر قوة الأبطال وتنظيم الوقت، هيا ننقذ القلعة معا!"
+      },
+      "imageUrl": null,
+      "imagePromptEnglish": "Epic magical entrance: Spider-Man steps through a radiant portal of shimmering golden light in gleaming heroic knight armor, saluting an authentic 7-year-old Arab boy named Omar, authentic child proportions, haircut: short neat dark textured crop haircut with clean clipper fade on sides and temples, high forehead, face & skin: large expressive dark brown almond eyes, arched neat dark eyebrows, slender oval face with gentle child cheeks, smooth warm light-olive skin tone, sweet gentle confident smile, wearing a customized modern superhero adventurer suit with a glowing chest emblem and fluttering heroic cape, identical facial structure, eyes, eyebrows, nose, lips and haircut strictly matching character reference photo with authentic child identity preserved with a proud smile, teaching that true magic flows from honesty, discipline, and courage.",
+      "flowPromptEnglish": "Epic magical entrance: Spider-Man steps through a radiant portal of shimmering golden light in gleaming heroic knight armor, saluting an authentic 7-year-old Arab boy named Omar, authentic child proportions, haircut: short neat dark textured crop haircut with clean clipper fade on sides and temples, high forehead, face & skin: large expressive dark brown almond eyes, arched neat dark eyebrows, slender oval face with gentle child cheeks, smooth warm light-olive skin tone, sweet gentle confident smile, wearing a customized modern superhero adventurer suit with a glowing chest emblem and fluttering heroic cape, identical facial structure, eyes, eyebrows, nose, lips and haircut strictly matching character reference photo with authentic child identity preserved with a proud smile, teaching that true magic flows from honesty, discipline, and courage."
+    },
+    {
+      "pageNumber": 6,
+      "type": "story",
+      "title": "مخطوطات الحكمة والتدريب الملكي",
+      "textArabic": "في مكتبة القلعة العريقة فتح سبايدرمان (Spider-Man) أمام عمر مخطوطات الفرسان القديمة، وبدأ يدربه على فنون التركيز الصارم وترتيب خطوات العمل. تدرب بطلنا الصغير على حل الألغاز المعقدة بسرعة مدهشة وتركيز متواصل دون تشتت، وتعلم كيف يقهر رغبة المماطلة ويحول كل تحد إلى انتصار، ليثبت للجميع أنه يمتلك عقل فارس حقيقي يجمع بين الحكمة والعمل الدؤوب.",
+      "dialogueBubble": {
+        "speaker": "سبايدرمان (Spider-Man)",
+        "text": "المخطوطة واضحة وعزيمتك قوية يا عمر! بالانضباط ستكسر كل الظلال وتعيد النور!"
+      },
+      "imageUrl": null,
+      "imagePromptEnglish": "Enchanted library scroll study and virtue training: Spider-Man and an authentic 7-year-old Arab boy named Omar, authentic child proportions, haircut: short neat dark textured crop haircut with clean clipper fade on sides and temples, high forehead, face & skin: large expressive dark brown almond eyes, arched neat dark eyebrows, slender oval face with gentle child cheeks, smooth warm light-olive skin tone, sweet gentle confident smile, wearing a customized modern superhero adventurer suit with a glowing chest emblem and fluttering heroic cape, identical facial structure, eyes, eyebrows, nose, lips and haircut strictly matching character reference photo with authentic child identity preserved study ancient glowing wisdom scrolls together, mastering spells of focus and perseverance with floating golden glyphs and magical starlight.",
+      "flowPromptEnglish": "Enchanted library scroll study and virtue training: Spider-Man and an authentic 7-year-old Arab boy named Omar, authentic child proportions, haircut: short neat dark textured crop haircut with clean clipper fade on sides and temples, high forehead, face & skin: large expressive dark brown almond eyes, arched neat dark eyebrows, slender oval face with gentle child cheeks, smooth warm light-olive skin tone, sweet gentle confident smile, wearing a customized modern superhero adventurer suit with a glowing chest emblem and fluttering heroic cape, identical facial structure, eyes, eyebrows, nose, lips and haircut strictly matching character reference photo with authentic child identity preserved study ancient glowing wisdom scrolls together, mastering spells of focus and perseverance with floating golden glyphs and magical starlight."
+    },
+    {
+      "pageNumber": 7,
+      "type": "story",
+      "title": "استعادة جوهرة النور وانتصار المملكة",
+      "textArabic": "انطلق عمر بثقة إلى قلب المتاهة ووضع المفتاح الذهبي في مكانه الصحيح بهدوء متقن! تفجرت موجات من الضياء الذهبي الصافي أزاحت كل الظلال وأعادت لجوهرة النور بريقها الأسطوري لتضيء سماء المملكة بأسرها. هتف سبايدرمان (Spider-Man) وكل فرسان القلعة معبرين عن فخرهم بشجاعة وإخلاص البطل الصغير الذي أنقذ المملكة بذكائه وتنظيمه المتقن.",
+      "dialogueBubble": {
+        "speaker": "عمر",
+        "text": "لقد عاد النور للمملكة! بالصبر والاجتهاد والأمانة انتصرنا على كل الظلال!"
+      },
+      "imageUrl": null,
+      "imagePromptEnglish": "Triumphant restoration of the Light Gem: an authentic 7-year-old Arab boy named Omar, authentic child proportions, haircut: short neat dark textured crop haircut with clean clipper fade on sides and temples, high forehead, face & skin: large expressive dark brown almond eyes, arched neat dark eyebrows, slender oval face with gentle child cheeks, smooth warm light-olive skin tone, sweet gentle confident smile, wearing a customized modern superhero adventurer suit with a glowing chest emblem and fluttering heroic cape, identical facial structure, eyes, eyebrows, nose, lips and haircut strictly matching character reference photo with authentic child identity preserved places the restored radiant crystal on the central altar, sending brilliant waves of golden light dispelling darkness across the fantasy kingdom, joyful victory stance alongside Spider-Man.",
+      "flowPromptEnglish": "Triumphant restoration of the Light Gem: an authentic 7-year-old Arab boy named Omar, authentic child proportions, haircut: short neat dark textured crop haircut with clean clipper fade on sides and temples, high forehead, face & skin: large expressive dark brown almond eyes, arched neat dark eyebrows, slender oval face with gentle child cheeks, smooth warm light-olive skin tone, sweet gentle confident smile, wearing a customized modern superhero adventurer suit with a glowing chest emblem and fluttering heroic cape, identical facial structure, eyes, eyebrows, nose, lips and haircut strictly matching character reference photo with authentic child identity preserved places the restored radiant crystal on the central altar, sending brilliant waves of golden light dispelling darkness across the fantasy kingdom, joyful victory stance alongside Spider-Man."
+    },
+    {
+      "pageNumber": 8,
+      "type": "story",
+      "title": "تتويج فارس الشرف الملكي",
+      "textArabic": "في بهو العرش العظيم وتحت الرايات الملكية الفاخرة، تقدم الملك وسبايدرمان (Spider-Man) وتوجا عمر بوشاح الشرف ووسام \"فارس القلعة الذهبي\". وقف الجميع ينحنون احتراما للبطل الصغير الذي قاد المملكة نحو النصر بأخلاقه وانضباطه، وعلم عمر أن أعظم وسام يحمله الإنسان هو وسام الخلق الرفيع والانضباط الصادق الذي ينير كل دروب الحياة.",
+      "dialogueBubble": {
+        "speaker": "سبايدرمان (Spider-Man)",
+        "text": "فخور بك يا فارس الشرف عمر! ستبقى دائما قدوة في الأمانة والإقدام!"
+      },
+      "imageUrl": null,
+      "imagePromptEnglish": "Grand royal throne room coronation: amidst majestic velvet banners and royal fanfare, Spider-Man places a radiant golden Knight of Honor medal and laurel around an authentic 7-year-old Arab boy named Omar, authentic child proportions, haircut: short neat dark textured crop haircut with clean clipper fade on sides and temples, high forehead, face & skin: large expressive dark brown almond eyes, arched neat dark eyebrows, slender oval face with gentle child cheeks, smooth warm light-olive skin tone, sweet gentle confident smile, wearing a customized modern superhero adventurer suit with a glowing chest emblem and fluttering heroic cape, identical facial structure, eyes, eyebrows, nose, lips and haircut strictly matching character reference photo with authentic child identity preserved's neck, proud cheering parents and royal courtiers celebrating.",
+      "flowPromptEnglish": "Grand royal throne room coronation: amidst majestic velvet banners and royal fanfare, Spider-Man places a radiant golden Knight of Honor medal and laurel around an authentic 7-year-old Arab boy named Omar, authentic child proportions, haircut: short neat dark textured crop haircut with clean clipper fade on sides and temples, high forehead, face & skin: large expressive dark brown almond eyes, arched neat dark eyebrows, slender oval face with gentle child cheeks, smooth warm light-olive skin tone, sweet gentle confident smile, wearing a customized modern superhero adventurer suit with a glowing chest emblem and fluttering heroic cape, identical facial structure, eyes, eyebrows, nose, lips and haircut strictly matching character reference photo with authentic child identity preserved's neck, proud cheering parents and royal courtiers celebrating."
+    },
+    {
+      "pageNumber": 9,
+      "type": "coloring",
+      "title": "لوّن البطل عمر مع سبايدرمان (Spider-Man)",
+      "textArabic": "صفحة تلوين تفاعلية: البطل عمر مع سبايدرمان (Spider-Man) في وضعية استعراض القوة والبطولة في fantasy-magic.",
+      "imageUrl": null,
+      "coloringImageUrl": null,
+      "imagePromptEnglish": "Children coloring book line art drawing. Clean black and white vector line art of a young 7-year-old Arab boy named Omar standing side-by-side with Spider-Man in an iconic superhero power pose, pure white background, crisp bold black contour outlines, no color, no grayscale, no shading, printable children coloring page.",
+      "flowPromptEnglish": "Children coloring book line art drawing. Clean black and white vector line art of a young 7-year-old Arab boy named Omar standing side-by-side with Spider-Man in an iconic superhero power pose, pure white background, crisp bold black contour outlines, no color, no grayscale, no shading, printable children coloring page."
+    },
+    {
+      "pageNumber": 10,
+      "type": "coloring",
+      "title": "مشهد التحدي والانتصار للتلوين",
+      "textArabic": "صفحة تلوين تفاعلية: البطل ينجز المهمة بنجاح وتفوق ويحتفل مع بطله في fantasy-magic.",
+      "imageUrl": null,
+      "coloringImageUrl": null,
+      "imagePromptEnglish": "Children interactive coloring page. Clean black and white line art of a young Arab boy named Omar celebrating victory and accomplishment alongside Spider-Man with victory stars, crisp clean black vector outlines on pure white background, zero color, zero shading, high-contrast coloring book page for children.",
+      "flowPromptEnglish": "Children interactive coloring page. Clean black and white line art of a young Arab boy named Omar celebrating victory and accomplishment alongside Spider-Man with victory stars, crisp clean black vector outlines on pure white background, zero color, zero shading, high-contrast coloring book page for children."
+    },
+    {
+      "pageNumber": 11,
+      "type": "coloring",
+      "title": "درع ووسام البطل عمر",
+      "textArabic": "صفحة تلوين تفاعلية: درع الشجاعة والتميز يحمل اسم البطل عمر ليزينه بألوانه المفضلة.",
+      "imageUrl": null,
+      "coloringImageUrl": null,
+      "imagePromptEnglish": "Children coloring book heraldic crest. A heroic knight shield and crest featuring a clean bold banner with the name Omar in clear English block letters, flanked by victory wings, laurels, and stars, clean bold black vector line art on pure white background, zero shading, ready for kids coloring.",
+      "flowPromptEnglish": "Children coloring book heraldic crest. A heroic knight shield and crest featuring a clean bold banner with the name Omar in clear English block letters, flanked by victory wings, laurels, and stars, clean bold black vector line art on pure white background, zero shading, ready for kids coloring."
+    },
+    {
+      "pageNumber": 12,
+      "type": "certificate",
+      "title": "شهادة بطل السلوك الإيجابي والتفوق",
+      "textArabic": "شهادة رسمية صادرة من مكتبة الشعلة بتوقيع الوالدين لتكريم البطل عمر.",
+      "imageUrl": null,
+      "imagePromptEnglish": "Pixar 3D animated film style, 8k render. Ornate golden achievement certificate frame with glossy royal red ribbon, golden starbursts, sparkling heroic trophy, elegant decorative border, vibrant festive lighting, celebration atmosphere.",
+      "flowPromptEnglish": "Pixar 3D animated film style, 8k render. Ornate golden achievement certificate frame with glossy royal red ribbon, golden starbursts, sparkling heroic trophy, elegant decorative border, vibrant festive lighting, celebration atmosphere."
+    }
+  ]
+}

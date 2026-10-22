@@ -1,0 +1,32 @@
+
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800" width="100%" height="100%">
+      <rect width="600" height="800" fill="#ffffff" />
+      <rect x="25" y="25" width="550" height="750" fill="none" stroke="#0f172a" stroke-width="6" rx="16" />
+
+      <text x="300" y="80" font-family="'Cairo', sans-serif" font-size="28" font-weight="900" text-anchor="middle" fill="#0f172a">
+        مشهد الانتصار والتفوق!
+      </text>
+      <line x1="120" y1="100" x2="480" y2="100" stroke="#0f172a" stroke-width="3" stroke-dasharray="8 8" />
+
+      <!-- طاولة وكتب ووسام مفرغ للتلوين -->
+      <g stroke="#0f172a" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <!-- كتاب التفوق المفتوح -->
+        <path d="M150,450 Q300,420 450,450 L450,600 Q300,570 150,600 Z" />
+        <line x1="300" y1="435" x2="300" y2="585" stroke-width="4" />
+
+        <!-- كأس البطولة والتميز -->
+        <path d="M230,220 L370,220 L350,330 Q300,380 250,330 Z" />
+        <path d="M220,240 Q180,270 240,300" />
+        <path d="M380,240 Q420,270 360,300" />
+        <line x1="300" y1="365" x2="300" y2="410" stroke-width="8" />
+        <rect x="260" y="410" width="80" height="25" rx="5" />
+
+        <!-- نجمة داخل الكأس -->
+        <polygon points="300,250 307,270 330,270 312,285 319,305 300,292 281,305 288,285 270,270 293,270" />
+      </g>
+
+      <text x="300" y="690" font-family="'Cairo', sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#0f172a">
+        العلم والاجتهاد سر قوة الأبطال! 🖍️
+      </text>
+    </svg>
+    
